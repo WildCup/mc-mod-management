@@ -1,0 +1,106 @@
+
+
+using System.Numerics;
+
+namespace McHelper;
+
+public class Logic
+{
+    private List<Mod> _mods;
+    private List<Mod> _modsKnown;
+
+    public IReadOnlyCollection<Mod> Mods => new ReadOnlyCollection<Mod>(_mods);
+    public IReadOnlyCollection<Mod> ModsKnown => new ReadOnlyCollection<Mod>(_modsKnown);
+
+    public Logic(IEnumerable<Mod> mods, IEnumerable<Mod> modsKnown)
+    {
+        _mods = mods.ToList();
+        _modsKnown = modsKnown.ToList();
+    }
+
+    public void Sync(IEnumerable<Mod> modsInput)
+    {
+        ModExtensions.Log($"Synchronizing {modsInput.Count()} mods", ConsoleColor.Magenta);
+
+        //sync - save new mods to known
+        _modsKnown = _modsKnown.Where(b => !_mods.Any(m => m.IsSameMod(b))).ToList();
+        _modsKnown.AddRange(_mods);
+
+        //add - all mods, and dependencies if not added
+        foreach (var modInput in modsInput)
+        {
+            var mod = SyncMod(modInput);
+            if (mod == null) continue;
+            SyncDependencies(mod, modInput);
+        }
+
+        //delete - delete mods that were not found in .minecraft/mods but are added
+        var names = modsInput.Select(m2 => m2.Name);
+        var deleted = _mods.Where(m => !names.Contains(m.Name));
+        foreach (var mod in deleted)
+            ModExtensions.Log($"Mod {mod.Name} was deleted", ConsoleColor.Red);
+
+        _mods = _mods.Except(deleted).ToList();
+
+        ModExtensions.Log("Synchronization completed", ConsoleColor.Magenta);
+    }
+    private Mod? SyncMod(Mod modInput)
+    {
+        //skip - already added
+        var mod = _mods.FirstOrDefault(m => m.HasExactName(modInput.Name));
+        if (mod != null) return mod;
+
+        //update - mod already added but with different version
+        mod = _mods.FirstOrDefault(m => m.IsSameMod(modInput));
+        if (mod != null)
+        {
+            ModExtensions.Log($"Mod {modInput.Name} was updated from {mod.Name}", ConsoleColor.Yellow);
+            mod.Name = modInput.Name;
+            return mod;
+        }
+
+        //ignore if not added and is a dependency
+        mod = _mods.FirstOrDefault(m => m.Dependencies.ContainsName(modInput.Name));
+        if (mod != null) return null;
+
+        //move from known and update - mod is not added but is known
+        mod = _modsKnown.FirstOrDefault(m => m.IsSameMod(modInput));
+        if (mod != null)
+        {
+            ModExtensions.Log($"Mod {modInput.Name} was moved from known {mod.Name}", ConsoleColor.Green);
+            mod.Name = modInput.Name;
+            _mods.Add(mod);
+            return mod;
+        }
+
+        //add
+        ModExtensions.Log($"Mod {modInput.Name} was added", ConsoleColor.Green);
+        _mods.Add(modInput);
+        return modInput;
+    }
+    private static void SyncDependencies(Mod mod, Mod modInput)
+    {
+        var toAdd = modInput.Dependencies.Except(mod.Dependencies);
+        foreach (var dependency in toAdd)
+        {
+            var oldDependency = mod.Dependencies.FirstOrDefault(d => d.SameName(dependency));
+            if (oldDependency != null) //update dependency
+            {
+                ModExtensions.Log($"Dependency {dependency} was updated from {oldDependency} for mod {mod.Name}", ConsoleColor.DarkYellow);
+                mod.Dependencies.Remove(oldDependency);
+                mod.Dependencies.Add(dependency);
+            }
+            else //add dependency
+            {
+                ModExtensions.Log($"Dependency added {dependency} to {mod.Name}", ConsoleColor.DarkGreen);
+                mod.Dependencies.Add(dependency);
+            }
+        }
+
+        //remove dependency log
+        var unused = mod.Dependencies.Except(modInput.Dependencies);
+        foreach (var u in unused)
+            ModExtensions.Log($"Dependency {u} added in {mod.Name} but not required", ConsoleColor.DarkRed);
+    }
+
+}

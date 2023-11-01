@@ -1,0 +1,13 @@
+global using McHelper;
+global using Newtonsoft.Json;
+global using Newtonsoft.Json.Converters;
+global using Xunit;
+global using System.IO.Compression;
+global using Newtonsoft.Json.Linq;
+global using System.Text;
+global using Tomlyn;
+global using Tomlyn.Model;
+global using McHelper.Tests;
+global using System.Reflection;
+global using System.Collections.ObjectModel;
+global using McHelper.Exceptions;
