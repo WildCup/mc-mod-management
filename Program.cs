@@ -1,7 +1,7 @@
 ﻿//init
 // var _input = @"C:\Users\hagel\AppData\Roaming\.minecraft\mods";
-var _input = @"C:\Users\hagel\AppData\Roaming\.minecraft\mods";
-var files = new FileLogic(_input);
+var input = @"C:\Users\hagel\AppData\Roaming\.minecraft\mods";
+var files = new FileLogic(input);
 
 //main logic
 var main = new Logic(files.Mods, files.ModsKnown);
