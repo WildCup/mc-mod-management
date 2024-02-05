@@ -1,8 +1,13 @@
-namespace McHelper;
+namespace McHelper.Application.Logic;
+
+using McHelper.Domain.Exceptions;
+using McHelper.Domain.Models;
+using Tomlyn;
+using Tomlyn.Model;
 
 public class ZipLogic
 {
-	private static readonly string[] Ignore = new string[] { "forge", "minecraft", "fabricloader", "java", "fabric", "fabric-api", "fabric-lifecycle-events-v1", "fabric-command-api-v2", "fabric-api-base", "fabric-api" };
+	private static readonly string[] Ignore = ["forge", "minecraft", "fabricloader", "java", "fabric", "fabric-api", "fabric-lifecycle-events-v1", "fabric-command-api-v2", "fabric-api-base", "fabric-api"];
 
 	public static TomlTable? GetMetaToml(ZipArchive zip, string name) //read metadata from all mods in folder .minecraft/mods
 	{
@@ -47,6 +52,7 @@ public class ZipLogic
 		}
 		return found.Except(Ignore).ToList();
 	}
+
 	public static string GetId(TomlTable model, string name)
 	{
 		var idSection = model["mods"];
@@ -74,24 +80,19 @@ public class ZipLogic
 			throw new MetaDataException(model, name);
 		return found.First();
 	}
+
 	public static IEnumerable<string> GetDependencies(MetaJson json, string name)
 	{
 		if (json.Depends == null)
 			throw new MetaDataException(json, name);
 		var dependencies = json.Depends.Keys.ToList();
-		return dependencies.Except(Ignore.Concat(new[] { name })).ToList();
+		return dependencies.Except(Ignore.Concat([name])).ToList();
 	}
+
 	public static string GetId(MetaJson json, string name)
 	{
 		if (json.Id == null)
 			throw new MetaDataException(json, name);
 		return json.Id;
 	}
-}
-
-
-public class MetaJson
-{
-	public string? Id { get; set; }
-	public Dictionary<string, string>? Depends { get; set; }
 }

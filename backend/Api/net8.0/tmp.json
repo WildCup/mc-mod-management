@@ -1,0 +1,837 @@
+[
+  {
+    "Name": "ars_nouveau-1.16.5-1.25.7.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Content",
+    "Description": "craft your magic spells",
+    "Dependencies": [
+      "Patchouli-1.16.4-53.3.jar",
+      "curios-forge-1.16.5-4.0.8.2.jar"
+    ]
+  },
+  {
+    "Name": "Artifacts-1.16.5-2.10.5.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Content",
+    "Description": "18 nice, balanced artifacts",
+    "Dependencies": [
+      "cloth-config-4.16.91-forge.jar",
+      "expandability-2.0.1-forge.jar",
+      "curios-forge-1.16.5-4.0.8.2.jar"
+    ]
+  },
+  {
+    "Name": "BetterCaves-Forge-1.16.4-1.1.2.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Look",
+    "Description": "caves -> big nice caves",
+    "Dependencies": ["YungsApi-1.16.4-Forge-13.jar"]
+  },
+  {
+    "Name": "BetterDungeons-1.16.4-1.2.1.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Look",
+    "Description": "room with spawner -> nice small room with spawner",
+    "Dependencies": ["YungsApi-1.16.4-Forge-13.jar"]
+  },
+  {
+    "Name": "betterendforge-1.16.5-2.5.jar",
+    "Priority": 1,
+    "WorksConfirmed": false,
+    "Category": "Look",
+    "Description": "end -> nice big end",
+    "Dependencies": []
+  },
+  {
+    "Name": "BetterStrongholds-1.16.4-1.2.1.jar",
+    "Priority": 1,
+    "WorksConfirmed": true,
+    "Category": "Look",
+    "Description": "stronghold -> nice big stronghold",
+    "Dependencies": ["YungsApi-1.16.4-Forge-13.jar"]
+  },
+  {
+    "Name": "Botania-1.16.5-420.2.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Content",
+    "Description": "magic, items, enemies, mana",
+    "Dependencies": [
+      "Patchouli-1.16.4-53.3.jar",
+      "curios-forge-1.16.5-4.0.8.2.jar"
+    ]
+  },
+  {
+    "Name": "BrassAmberBattleTowers-1.16.5-1.6.2.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Content",
+    "Description": "huge!! battle towers, locked until golem killed",
+    "Dependencies": []
+  },
+  {
+    "Name": "Buddycards-1.16.5-2.5.3.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Content",
+    "Description": "super cool cards gacha helpers",
+    "Dependencies": ["curios-forge-1.16.5-4.0.8.2.jar"]
+  },
+  {
+    "Name": "bygonenether-1.2.1-1.16.5.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Content",
+    "Description": "nether buldings and mobs",
+    "Dependencies": []
+  },
+  {
+    "Name": "carryon-1.16.5-1.15.5.22.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Convention",
+    "Description": "you can carry items and animals",
+    "Dependencies": []
+  },
+  {
+    "Name": "Cataclysm-0.18.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Content",
+    "Description": "dungeons, boss items from Minecraft Dungeons",
+    "Dependencies": ["citadel-1.8.1-1.16.5.jar"]
+  },
+  {
+    "Name": "chocolate-1.3.0-1.16.4.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Helper",
+    "Description": "fix vanilla bugs - mostly to do with custom world generation",
+    "Dependencies": []
+  },
+  {
+    "Name": "Clumps-6.0.0.28.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Helper",
+    "Description": "Clumps groups XP orbs together",
+    "Dependencies": []
+  },
+  {
+    "Name": "coalexplosion-1.16.5-1.4.5.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Difficulty",
+    "Description": "coal + torch explode",
+    "Dependencies": []
+  },
+  {
+    "Name": "ConfigurableCane-1.16.5-2.1.0.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Convention",
+    "Description": "cone grows infinitely",
+    "Dependencies": []
+  },
+  {
+    "Name": "configured-1.5.4-1.16.5.jar",
+    "Priority": 2,
+    "WorksConfirmed": true,
+    "Category": "Client",
+    "Description": "shows guid to config mods",
+    "Dependencies": ["catalogue-1.6.1-1.16.5.jar"]
+  },
+  {
+    "Name": "Creepypasta+Legendary+Entity+Mod+[The+big+comeback]-+[V-9.9.1]-1.16.5-(14000+).jar",
+    "Priority": 2,
+    "WorksConfirmed": true,
+    "Category": "Difficulty",
+    "Description": "heorobine, other, op items, structures",
+    "Dependencies": []
+  },
+  {
+    "Name": "curioofundying-forge-1.16.5-5.2.0.0.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Convention",
+    "Description": "extra place for totem",
+    "Dependencies": []
+  },
+  {
+    "Name": "curiouselytra-forge-1.16.5-4.0.2.4.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Convention",
+    "Description": "extra place for elytra",
+    "Dependencies": ["caelus-forge-1.16.5-2.1.3.2.jar"]
+  },
+  {
+    "Name": "cursery-2.7-1.16.5.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Difficulty",
+    "Description": "new coursed enchants",
+    "Dependencies": []
+  },
+  {
+    "Name": "DungeonCrawl-1.16.5-2.3.9.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Look",
+    "Description": "big new dungeons",
+    "Dependencies": []
+  },
+  {
+    "Name": "dungeons_enhanced-1.16.5-1.8.1.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Look",
+    "Description": "cool new structures",
+    "Dependencies": ["structure_gel-1.16.5-1.7.8.jar"]
+  },
+  {
+    "Name": "dungeons_mobs-1.16.5-2.0.3-beta.jar",
+    "Priority": 2,
+    "WorksConfirmed": true,
+    "Category": "Content",
+    "Description": "plenty of super cool mobs",
+    "Dependencies": [
+      "dungeons_libraries-1.16.5-0.0.15-beta.jar",
+      "geckolib-forge-1.16.5-3.0.92.jar"
+    ]
+  },
+  {
+    "Name": "dungeons_plus-1.16.5-1.1.5.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Content",
+    "Description": "superb new dungeons and towers",
+    "Dependencies": ["structure_gel-1.16.5-1.7.8.jar"]
+  },
+  {
+    "Name": "DungeonsArise-1.16.5-2.1.49-beta.jar",
+    "Priority": 2,
+    "WorksConfirmed": true,
+    "Category": "Content",
+    "Description": "huge superb new dungeons",
+    "Dependencies": ["structure_gel-1.16.5-1.7.8.jar"]
+  },
+  {
+    "Name": "DungeonsMod-1.16.3-1.4.43.jar",
+    "Priority": 1,
+    "WorksConfirmed": true,
+    "Category": "Content",
+    "Description": "7 new bosses",
+    "Dependencies": []
+  },
+  {
+    "Name": "DynamicSurroundings-1.16.5-4.0.5.0.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Look",
+    "Description": "better sounds",
+    "Dependencies": []
+  },
+  {
+    "Name": "eidolon-0.2.7.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Content",
+    "Description": "dark magic and exorcism",
+    "Dependencies": ["curios-forge-1.16.5-4.0.8.2.jar"]
+  },
+  {
+    "Name": "EnchantmentDescriptions-1.16.5-7.1.20.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Client",
+    "Description": "enchantment descriptions",
+    "Dependencies": ["Bookshelf-Forge-1.16.5-10.4.32.jar"]
+  },
+  {
+    "Name": "enchantwithmob-1.16.5-1.5.2.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Difficulty",
+    "Description": "mobs have enchants",
+    "Dependencies": []
+  },
+  {
+    "Name": "EngulfingDarkness-1.1.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Difficulty",
+    "Description": "darkness kill you",
+    "Dependencies": []
+  },
+  {
+    "Name": "enhancedcelestials-2.0.9-1.16.5.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Difficulty",
+    "Description": "blood moon, blue moon, harvest moon",
+    "Dependencies": []
+  },
+  {
+    "Name": "EnhancedVisuals_v1.3.32_mc1.16.5.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Look",
+    "Description": "better visual effects",
+    "Dependencies": ["CreativeCore_v2.2.1_mc1.16.5.jar"]
+  },
+  {
+    "Name": "EvilCraft-1.16.5-1.1.17.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Content",
+    "Description": "blood magic",
+    "Dependencies": ["CyclopsCore-1.16.5-1.13.0.jar"]
+  },
+  {
+    "Name": "EyesInTheDarkness-1.16.5-1.0.6.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Look",
+    "Description": "Eyes In The Darkness",
+    "Dependencies": []
+  },
+  {
+    "Name": "FallingTree-1.16.5-2.11.5.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Convention",
+    "Description": "trees are falling",
+    "Dependencies": []
+  },
+  {
+    "Name": "FastWorkbench-1.16.5-4.6.2.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Helper",
+    "Description": "workbench works faster",
+    "Dependencies": ["Placebo-1.16.5-4.7.0.jar"]
+  },
+  {
+    "Name": "ferritecore-2.1.0-forge.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Helper",
+    "Description": "reduces the memory usage",
+    "Dependencies": []
+  },
+  {
+    "Name": "firstaid-1.9.8.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Difficulty",
+    "Description": "bandages, separate hearts",
+    "Dependencies": []
+  },
+  {
+    "Name": "HealthOverlay-1.16.5-3.0.1.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Client",
+    "Description": "colorful hears",
+    "Dependencies": []
+  },
+  {
+    "Name": "hexerei-0.1.4.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Content",
+    "Description": "Witches, witch city and magic",
+    "Dependencies": []
+  },
+  {
+    "Name": "HMM19.3.1MC1.16.5.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Difficulty",
+    "Description": "tons of horror mobs",
+    "Dependencies": []
+  },
+  {
+    "Name": "Horror+Elements+mod+1.16.5_Halloween_update.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Look",
+    "Description": "dead bodies decorations",
+    "Dependencies": []
+  },
+  {
+    "Name": "Hwyla-forge-1.10.11-B78_1.16.2.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Client",
+    "Description": "Here's What You're Looking At",
+    "Dependencies": []
+  },
+  {
+    "Name": "illagers_plus-1.16.5v1.0.2.jar",
+    "Priority": 2,
+    "WorksConfirmed": true,
+    "Category": "Content",
+    "Description": "new ilagers enemies",
+    "Dependencies": ["litewolfcore-1.16.5v1.0.1.jar"]
+  },
+  {
+    "Name": "improvedmobs-1.16.5-1.10.13.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Difficulty",
+    "Description": "difficulty system, mobs can fly on parrots, break blocks etc",
+    "Dependencies": ["TenshiLib-1.16.3-1.3.0.jar"]
+  },
+  {
+    "Name": "invtweaks-1.16.4-1.0.1.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Client",
+    "Description": "mouse twerks",
+    "Dependencies": []
+  },
+  {
+    "Name": "jei-1.16.5-7.7.1.152.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Client",
+    "Description": "just enough items",
+    "Dependencies": []
+  },
+  {
+    "Name": "JustEnoughResources-1.16.5-0.12.1.128.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Client",
+    "Description": "Just Enough Resources",
+    "Dependencies": []
+  },
+  {
+    "Name": "logprot-1.16-1.6.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Convention",
+    "Description": "protects you when you login",
+    "Dependencies": []
+  },
+  {
+    "Name": "lycanitesmobs-1.16.5-2.3.3.3.jar",
+    "Priority": 1,
+    "WorksConfirmed": true,
+    "Category": "Difficulty",
+    "Description": "mods from RlCraft",
+    "Dependencies": []
+  },
+  {
+    "Name": "magicaljewelry-1.16.5_1.2.12.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Content",
+    "Description": "rings with potion effects",
+    "Dependencies": ["curios-forge-1.16.5-4.0.8.2.jar"]
+  },
+  {
+    "Name": "majruszs-difficulty-1.16.4-1.1.0.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Difficulty",
+    "Description": "makes mobs a lot harder and harder",
+    "Dependencies": ["majrusz-library-1.16.4-2.0.1.jar"]
+  },
+  {
+    "Name": "majruszsaccessories-1.16.5-0.1.4.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Content",
+    "Description": "a few balanced accessories",
+    "Dependencies": ["majrusz-library-1.16.4-2.0.1.jar"]
+  },
+  {
+    "Name": "meetyourfight-1.16.5-1.2.0.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Content",
+    "Description": "4 summable bosses",
+    "Dependencies": ["curios-forge-1.16.5-4.0.8.2.jar"]
+  },
+  {
+    "Name": "minecolonies-1.16.5-1.0.978-RELEASE.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Content",
+    "Description": "villagers to do tasks and houses",
+    "Dependencies": [
+      "structurize-1.16.5-1.0.418-ALPHA.jar",
+      "constructionwand-1.16.5-2.6.jar"
+    ]
+  },
+  {
+    "Name": "modifiers-0.1.2-forge.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Content",
+    "Description": "adds random modifiers to gear",
+    "Dependencies": []
+  },
+  {
+    "Name": "mowziesmobs-1.5.25.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Content",
+    "Description": "a few cool bosses and items",
+    "Dependencies": ["geckolib-forge-1.16.5-3.0.92.jar"]
+  },
+  {
+    "Name": "MutantBeasts-1.16.4-1.1.3.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Difficulty",
+    "Description": "mutants creatures",
+    "Dependencies": []
+  },
+  {
+    "Name": "oculus-1.2.6.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Helper",
+    "Description": "optimization",
+    "Dependencies": []
+  },
+  {
+    "Name": "OuterEnd-0.2.14.jar",
+    "Priority": 1,
+    "WorksConfirmed": false,
+    "Category": "Look",
+    "Description": "better end",
+    "Dependencies": ["abnormals_core-1.16.5-3.3.1.jar"]
+  },
+  {
+    "Name": "overloadedarmorbar-5.1.0.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Client",
+    "Description": "overload armor bar",
+    "Dependencies": []
+  },
+  {
+    "Name": "performant-1.16.2-5-3.99m.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Helper",
+    "Description": "optimization",
+    "Dependencies": []
+  },
+  {
+    "Name": "PlayerRevive_v2.0.0-pre04_mc1.16.5.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Convention",
+    "Description": "your friend can revive you",
+    "Dependencies": ["CreativeCore_v2.2.1_mc1.16.5.jar"]
+  },
+  {
+    "Name": "polymorph-forge-1.16.5-0.41.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Convention",
+    "Description": "choose the recipe",
+    "Dependencies": []
+  },
+  {
+    "Name": "pyrologerandfriends-1.6.5.7-1.16.5.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Content",
+    "Description": "tons of new pillagers and some strong items",
+    "Dependencies": []
+  },
+  {
+    "Name": "randompatches-2.4.4-forge.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Helper",
+    "Description": "bugfixes and improvements",
+    "Dependencies": []
+  },
+  {
+    "Name": "rats-7.2.0-1.16.5.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Content",
+    "Description": "rats!!!",
+    "Dependencies": ["citadel-1.8.1-1.16.5.jar"]
+  },
+  {
+    "Name": "RealisticTorches-1.16.5-3.1.5.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Difficulty",
+    "Description": "torches burn out",
+    "Dependencies": []
+  },
+  {
+    "Name": "rubidium-0.2.10.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Helper",
+    "Description": "optimization",
+    "Dependencies": []
+  },
+  {
+    "Name": "ScalingHealth-1.16.5-4.1.5+11.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Difficulty",
+    "Description": "less hp and hear crystals",
+    "Dependencies": ["silent-lib-1.16.5-4.10.0.jar"]
+  },
+  {
+    "Name": "Scary_Mobs_And_Bosses-mod-1.16.5_1.2.0.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Difficulty",
+    "Description": "clown and scary monsters",
+    "Dependencies": ["geckolib-forge-1.16.5-3.0.92.jar"]
+  },
+  {
+    "Name": "SkyVillage_1.0.0_1.16.5.jar",
+    "Priority": 2,
+    "WorksConfirmed": true,
+    "Category": "Look",
+    "Description": "cool sky villages",
+    "Dependencies": []
+  },
+  {
+    "Name": "Sledgehammer-1.16.5-2.0.1.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Helper",
+    "Description": "many mods/vanilla fixes",
+    "Dependencies": []
+  },
+  {
+    "Name": "sons-of-sins-1.16.5-1.0.9.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Difficulty",
+    "Description": "superb horror mobs",
+    "Dependencies": []
+  },
+  {
+    "Name": "spark-1.9.1-forge.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Helper",
+    "Description": "optimizer and monitoring tool",
+    "Dependencies": []
+  },
+  {
+    "Name": "SpartanShields-1.16.5-2.1.2.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Content",
+    "Description": "more shields",
+    "Dependencies": []
+  },
+  {
+    "Name": "SpawnerFix-1.16.2-1.0.0.2.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Helper",
+    "Description": "optimization for spawners",
+    "Dependencies": []
+  },
+  {
+    "Name": "spiderstpo-1.16.4-2.0.0.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Difficulty",
+    "Description": "spider moves on the walls",
+    "Dependencies": []
+  },
+  {
+    "Name": "stalwart-dungeons-1.16.5-1.1.7.jar",
+    "Priority": 0,
+    "WorksConfirmed": false,
+    "Category": "Content",
+    "Description": "dungeons, superb mobs, items",
+    "Dependencies": []
+  },
+  {
+    "Name": "stoneholm-1.2.2.jar",
+    "Priority": 1,
+    "WorksConfirmed": false,
+    "Category": "Look",
+    "Description": "underground villagers",
+    "Dependencies": []
+  },
+  {
+    "Name": "StorageDrawers-1.16.3-8.5.2.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Convention",
+    "Description": "cool storages",
+    "Dependencies": []
+  },
+  {
+    "Name": "swingthroughgrass-1.16.4-1.5.3.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Convention",
+    "Description": "swing through grass",
+    "Dependencies": []
+  },
+  {
+    "Name": "takesapillage-1.0.1-1.16.5.jar",
+    "Priority": 2,
+    "WorksConfirmed": true,
+    "Category": "Look",
+    "Description": "pillagers structures and castles",
+    "Dependencies": []
+  },
+  {
+    "Name": "TaxOceanVillager+1.16.5+Modi+1.0.1.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Look",
+    "Description": "villagers on ships",
+    "Dependencies": []
+  },
+  {
+    "Name": "The_Graveyard_2.1_(FORGE)_for_1.16.4-1.16.5.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Content",
+    "Description": "cool new structures, mobs and bosses",
+    "Dependencies": []
+  },
+  {
+    "Name": "TheLegendOfHerobrine-1.16.5-0.6.3.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Difficulty",
+    "Description": "Herobine that you need to summon",
+    "Dependencies": []
+  },
+  {
+    "Name": "tombstone-6.8.3-1.16.5.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Content",
+    "Description": "tombs, mobs, potions",
+    "Dependencies": []
+  },
+  {
+    "Name": "ToolBelt-1.16.5-1.16.2.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Content",
+    "Description": "tool belt",
+    "Dependencies": []
+  },
+  {
+    "Name": "totaldarkness-1.3-1.16.5.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Difficulty",
+    "Description": "it is totally dark",
+    "Dependencies": []
+  },
+  {
+    "Name": "useful_backpacks-1.16.5-1.12.1.103.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Content",
+    "Description": "backpack",
+    "Dependencies": ["u_team_core-1.16.5-3.2.1.258.jar"]
+  },
+  {
+    "Name": "valhelsia_structures-1.16.5-0.1.6.jar",
+    "Priority": 1,
+    "WorksConfirmed": false,
+    "Category": "Look",
+    "Description": "useless but nice structures",
+    "Dependencies": ["valhelsia_core-16.0.15.jar"]
+  },
+  {
+    "Name": "w2w-1.16.1-0.0.5.2.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Client",
+    "Description": "waystones marks on map",
+    "Dependencies": ["any Waystones", "any Xaeros_Minimap"]
+  },
+  {
+    "Name": "WailaHarvestability-mc1.16.x-forge-1.1.15.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Client",
+    "Description": "harvest ability info",
+    "Dependencies": ["Hwyla-forge-1.10.11-B78_1.16.2.jar"]
+  },
+  {
+    "Name": "WAWLA-1.16.5-8.0.9.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Client",
+    "Description": "Here's What You're Looking At - addon",
+    "Dependencies": [
+      "Hwyla-forge-1.10.11-B78_1.16.2.jar",
+      "Bookshelf-Forge-1.16.5-10.4.32.jar"
+    ]
+  },
+  {
+    "Name": "Waystones_1.16.5-7.6.4.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Content",
+    "Description": "Waystones",
+    "Dependencies": []
+  },
+  {
+    "Name": "weeping_angels-36.0.1.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Difficulty",
+    "Description": "doctor who creatures",
+    "Dependencies": []
+  },
+  {
+    "Name": "whisperwoods-1.16.5-2.1.1-forge.jar",
+    "Priority": 3,
+    "WorksConfirmed": false,
+    "Category": "Difficulty",
+    "Description": "a few scary creatures",
+    "Dependencies": ["architectury-1.32.68.jar"]
+  },
+  {
+    "Name": "workshopsofdoom-1.16.4-1.1.0.1.jar",
+    "Priority": 2,
+    "WorksConfirmed": false,
+    "Category": "Look",
+    "Description": "a few cool structures",
+    "Dependencies": ["looot-1.16.4-1.0.0.3.jar"]
+  },
+  {
+    "Name": "Xaeros_Minimap_23.6.0_Forge_1.16.5.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Client",
+    "Description": "minimap",
+    "Dependencies": []
+  },
+  {
+    "Name": "XaerosWorldMap_1.31.0_Forge_1.16.5.jar",
+    "Priority": 3,
+    "WorksConfirmed": true,
+    "Category": "Client",
+    "Description": "world map",
+    "Dependencies": []
+  }
+]

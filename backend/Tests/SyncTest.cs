@@ -1,12 +1,14 @@
 namespace McHelper.Tests;
 
-using McHelper.Models;
+using McHelper.Application.Logic;
+using McHelper.Domain.Extensions;
+using McHelper.Domain.Models;
 
 
 public class SyncTest
 {
-	private List<McMod> _mods = new()
-	{
+	private List<McMod> _mods =
+	[
 		new McMod() { Name = "a-1.0" },
 		new McMod() {
 			Name = "b-1.0" ,
@@ -15,9 +17,9 @@ public class SyncTest
 			Category = Category.Look,
 			Description = "test mod"
 		},
-	};
-	private List<McMod> _modsKnown = new()
-	{
+	];
+	private List<McMod> _modsKnown =
+	[
 		new McMod() {
 			Name = "c-1.0" ,
 			Priority = Priority.Necessary,
@@ -25,8 +27,8 @@ public class SyncTest
 			Category = Category.Look,
 			Description = "test mod 2"
 		},
-	};
-	private List<string> _logs = new();
+	];
+	private List<string> _logs = [];
 
 	[Fact]
 	public void WhenAlreadyAdded()
@@ -36,7 +38,7 @@ public class SyncTest
 		var mod = _mods.First(m => m.Name == "b-1.0");
 		Assert.True(_mods.Count == 2);
 		Assert.True(mod.Priority == Priority.Necessary);
-		Assert.True(mod.WorksConfirmed == true);
+		Assert.True(mod.WorksConfirmed);
 		Assert.True(mod.Category == Category.Look);
 		Assert.True(mod.Description == "test mod");
 	}
@@ -49,7 +51,7 @@ public class SyncTest
 		var mod = _mods.First(m => m.Name == "b-1.1");
 		Assert.True(_mods.Count == 2);
 		Assert.True(mod.Priority == Priority.Necessary);
-		Assert.True(mod.WorksConfirmed == true);
+		Assert.True(mod.WorksConfirmed);
 		Assert.True(mod.Category == Category.Look);
 		Assert.True(mod.Description == "test mod");
 
@@ -64,7 +66,7 @@ public class SyncTest
 		var mod = _mods.First(m => m.Name == "c-1.1");
 		Assert.True(_mods.Count == 3);
 		Assert.True(mod.Priority == Priority.Necessary);
-		Assert.True(mod.WorksConfirmed == true);
+		Assert.True(mod.WorksConfirmed);
 		Assert.True(mod.Category == Category.Look);
 		Assert.True(mod.Description == "test mod 2");
 

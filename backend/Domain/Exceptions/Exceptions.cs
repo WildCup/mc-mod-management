@@ -1,14 +1,15 @@
-namespace McHelper.Exceptions;
+namespace McHelper.Domain.Exceptions;
 
-public class IncorrectConfigException : Exception
+using McHelper.Domain.Models;
+
+public class IncorrectConfigException(int modsCount, int knownCount, string[] names) : Exception(GetMsg(modsCount, knownCount, names))
 {
-	public IncorrectConfigException(FileLogic logic, string[] names) : base(GetMsg(logic, names)) { }
-	private static string GetMsg(FileLogic logic, string[] names)
+	private static string GetMsg(int modsCount, int knownCount, string[] names)
 	{
 		var msg = "couldn't read data: ";
-		if (logic.Mods.Count == 0)
+		if (modsCount == 0)
 			msg += $"\n-logic.Mods";
-		if (logic.ModsKnown.Count == 0)
+		if (knownCount == 0)
 			msg += $"\n-logic.ModsKnown";
 		if (names.Length == 0 || names.Contains(""))
 			msg += $"\n-logic.Names";
@@ -16,9 +17,8 @@ public class IncorrectConfigException : Exception
 	}
 }
 
-public class DuplicatesException : Exception
+public class DuplicatesException(IEnumerable<string> duplicates) : Exception(GetMsg(duplicates))
 {
-	public DuplicatesException(IEnumerable<string> duplicates) : base(GetMsg(duplicates)) { }
 	private static string GetMsg(IEnumerable<string> duplicates)
 	{
 		var msg = "you have duplicates: ";
@@ -47,9 +47,8 @@ public class MetaDataException : Exception
 	}
 }
 
-public class PathNotFoundException : Exception
+public class PathNotFoundException(string? msg = null) : Exception(msg ?? GetMsg())
 {
-	public PathNotFoundException(string? msg = null) : base(msg ?? GetMsg()) { }
 	private static string GetMsg()
 	{
 		return "could not find a path in location: " + Assembly.GetExecutingAssembly().Location;

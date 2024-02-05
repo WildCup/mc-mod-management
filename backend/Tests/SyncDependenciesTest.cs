@@ -1,24 +1,25 @@
 namespace McHelper.Tests;
 
-using McHelper.Models;
-
+using McHelper.Application.Logic;
+using McHelper.Domain.Extensions;
+using McHelper.Domain.Models;
 
 public class SyncDependenciesTest
 {
-	private List<McMod> _mods = new()
-	{
+	private List<McMod> _mods =
+	[
 		new McMod() {
 			Name = "a-1.0",
-			Dependencies = new() { "xxx-1.0", "yyy-1.0" }
+			Dependencies = ["xxx-1.0", "yyy-1.0"]
 		},
 		new McMod() { Name = "b-1.0" },
-	};
-	private List<string> _logs = new();
+	];
+	private List<string> _logs = [];
 
 	[Fact]
 	public void WhenAlreadyAdded()
 	{
-		Act(new() { Name = "a-1.0", Dependencies = new() { "xxx-1.0", "yyy-1.0" } }, new() { Name = "b-1.0" });
+		Act(new() { Name = "a-1.0", Dependencies = ["xxx-1.0", "yyy-1.0"] }, new() { Name = "b-1.0" });
 
 		var modA = _mods.First(m => m.Name == "a-1.0");
 		var modB = _mods.First(m => m.Name == "b-1.0");
@@ -29,7 +30,7 @@ public class SyncDependenciesTest
 	[Fact]
 	public void WhenAutoAddingDependency()
 	{
-		Act(new() { Name = "a-1.0", Dependencies = new() { "xxx-1.0", "yyy-1.0" } }, new() { Name = "b-1.0", Dependencies = new() { "zzz-1.0" } });
+		Act(new() { Name = "a-1.0", Dependencies = ["xxx-1.0", "yyy-1.0"] }, new() { Name = "b-1.0", Dependencies = new() { "zzz-1.0" } });
 
 		var modA = _mods.First(m => m.Name == "a-1.0");
 		var modB = _mods.First(m => m.Name == "b-1.0");
@@ -41,7 +42,7 @@ public class SyncDependenciesTest
 	[Fact]
 	public void WhenNotAdded()
 	{
-		Act(new() { Name = "a-1.0", Dependencies = new() { "xxx-1.0" } }, new() { Name = "b-1.0" });
+		Act(new() { Name = "a-1.0", Dependencies = ["xxx-1.0"] }, new() { Name = "b-1.0" });
 
 		var modA = _mods.First(m => m.Name == "a-1.0");
 		var modB = _mods.First(m => m.Name == "b-1.0");
@@ -53,7 +54,7 @@ public class SyncDependenciesTest
 	[Fact]
 	public void WhenNotRequired()
 	{
-		Act(new() { Name = "a-1.0", Dependencies = new() { "xxx-1.0" } }, new() { Name = "b-1.0" });
+		Act(new() { Name = "a-1.0", Dependencies = ["xxx-1.0"] }, new() { Name = "b-1.0" });
 
 		var modA = _mods.First(m => m.Name == "a-1.0");
 		var modB = _mods.First(m => m.Name == "b-1.0");
@@ -65,7 +66,7 @@ public class SyncDependenciesTest
 	[Fact]
 	public void WhenUpdatedDependency()
 	{
-		Act(new() { Name = "a-1.0", Dependencies = new() { "xxx-1.0", "yyy-1.1" } }, new() { Name = "b-1.0" });
+		Act(new() { Name = "a-1.0", Dependencies = ["xxx-1.0", "yyy-1.1"] }, new() { Name = "b-1.0" });
 
 		var modA = _mods.First(m => m.Name == "a-1.0");
 		var modB = _mods.First(m => m.Name == "b-1.0");
@@ -76,7 +77,7 @@ public class SyncDependenciesTest
 
 	private void Act(params McMod[] modsInput)
 	{
-		var main = new Logic(_mods, new List<McMod>());
+		var main = new Logic(_mods, []);
 		main.Sync(modsInput);
 		_mods = main.Mods.AsEnumerable().ToList();
 		_logs = ModExtensions.Logs.AsEnumerable().ToList();

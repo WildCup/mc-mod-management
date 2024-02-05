@@ -1,12 +1,14 @@
 namespace McHelper.Tests;
 
-using McHelper.Models;
+using McHelper.Application.Logic;
+using McHelper.Domain.Extensions;
+using McHelper.Domain.Models;
 
 public class FileLogicIntegrationTest
 {
 	private readonly IReadOnlyCollection<McMod> _modsInput;
 
-	private readonly List<string> _logs = new();
+	private readonly List<string> _logs = [];
 
 	[Fact]
 	public void WhenUpdatedDependency()

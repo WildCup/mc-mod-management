@@ -1,12 +1,16 @@
-namespace McHelper;
+namespace McHelper.Domain.Extensions;
+
+using McHelper.Domain.Exceptions;
 
 public static class ModExtensions
 {
+	private static readonly System.Buffers.SearchValues<char> MyChars = System.Buffers.SearchValues.Create("0123456789");
+
 	public static string PureName(this string str)
 	{
 		if (!"0123456789".ToCharArray().Any(i => str.Contains(i)))
 			return str;
-		str = str[..str.IndexOfAny("0123456789".ToCharArray())];
+		str = str[..str.AsSpan().IndexOfAny(MyChars)];
 		if (str.EndsWith("-", StringComparison.OrdinalIgnoreCase) || str.EndsWith("_", StringComparison.OrdinalIgnoreCase))
 			return str[..^1];
 		return str;
@@ -22,7 +26,7 @@ public static class ModExtensions
 		return arr.Any(n => n.SameName(name));
 	}
 
-	public static List<string> Logs { get; set; } = new();
+	public static List<string> Logs { get; set; } = [];
 	public static void Log(string text, ConsoleColor color)
 	{
 		Console.ForegroundColor = color;

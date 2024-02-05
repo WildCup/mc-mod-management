@@ -1,13 +1,15 @@
-namespace McHelper;
+namespace McHelper.Application.Logic;
 
-using McHelper.Models;
+using McHelper.Domain.Exceptions;
+using McHelper.Domain.Extensions;
+using McHelper.Domain.Models;
 
 public class FileLogic
 {
 	private static readonly string ModsPath = ModExtensions.GetPath() + @"\installed.json";
 	private static readonly string KnownPath = ModExtensions.GetPath() + @"\known.json";
 	private static readonly string BackupPath = ModExtensions.GetPath() + @"\backup.json";
-	private static readonly string[] Ignore = new string[] { "tl_skin_cape_forge", "OptiFine-OptiFine", "DynamicSurroundings-1.16.5-4.0.5.0.jar", "Hwyla-forge-1.10.11-B78_1.16.2.jar", "Sledgehammer-1.16.5-2.0.1.jar" };
+	private static readonly string[] Ignore = ["tl_skin_cape_forge", "OptiFine-OptiFine", "DynamicSurroundings-1.16.5-4.0.5.0.jar", "Hwyla-forge-1.10.11-B78_1.16.2.jar", "Sledgehammer-1.16.5-2.0.1.jar"];
 	private readonly string[] _names;
 
 	public IReadOnlyCollection<McMod> ModsInput { get; set; }
@@ -20,12 +22,12 @@ public class FileLogic
 		var modsData = File.ReadAllText(ModsPath);
 		var knownData = File.ReadAllText(KnownPath);
 
-		Mods = JsonConvert.DeserializeObject<List<McMod>>(modsData) ?? new List<McMod>();
-		ModsKnown = JsonConvert.DeserializeObject<List<McMod>>(knownData) ?? new List<McMod>();
+		Mods = JsonConvert.DeserializeObject<List<McMod>>(modsData) ?? [];
+		ModsKnown = JsonConvert.DeserializeObject<List<McMod>>(knownData) ?? [];
 		_names = Directory.GetFiles(input).Select(n => Path.GetFileName(n) ?? "").Except(Ignore).ToArray();
 
 		if (Mods.Count == 0 || ModsKnown.Count == 0 || _names.Length == 0 || _names.Contains(""))
-			throw new IncorrectConfigException(this, _names);
+			throw new IncorrectConfigException(Mods.Count, ModsKnown.Count, _names);
 
 		File.WriteAllText(BackupPath, modsData);
 
@@ -34,7 +36,7 @@ public class FileLogic
 		if (duplicates.Any())
 			throw new DuplicatesException(duplicates);
 
-		ModsInput = new ReadOnlyCollection<McMod>(GetBaseMods(input).ToList());
+		ModsInput = new ReadOnlyCollection<McMod>(GetBaseMods(input));
 	}
 
 	public static void Save(IEnumerable<McMod> mods, IEnumerable<McMod> modsKnown)
@@ -48,7 +50,7 @@ public class FileLogic
 		Console.WriteLine("File names saved to JSON successfully");
 	}
 
-	private IEnumerable<McMod> GetBaseMods(string input) //read metadata from all mods in folder .minecraft/mods
+	private List<McMod> GetBaseMods(string input) //read metadata from all mods in folder .minecraft/mods
 	{
 		ModExtensions.Log($"Synchronizing dependencies", ConsoleColor.DarkMagenta);
 

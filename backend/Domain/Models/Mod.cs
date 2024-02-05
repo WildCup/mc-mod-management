@@ -1,4 +1,6 @@
-namespace McHelper.Models;
+namespace McHelper.Domain.Models;
+
+using McHelper.Domain.Extensions;
 
 public class McMod
 {
@@ -9,7 +11,7 @@ public class McMod
 	[JsonConverter(typeof(StringEnumConverter))]
 	public Category Category { get; set; }
 	public string Description { get; set; } = string.Empty;
-	public List<string> Dependencies { get; set; } = new List<string>();
+	public List<string> Dependencies { get; set; } = [];
 	[JsonIgnore]
 	public TomlTable? MetaData { get; set; }
 

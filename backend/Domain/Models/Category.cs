@@ -1,4 +1,4 @@
-namespace McHelper.Models;
+namespace McHelper.Domain.Models;
 
 public enum Category
 {

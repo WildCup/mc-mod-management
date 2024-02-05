@@ -1,20 +1,15 @@
-namespace McHelper;
+namespace McHelper.Application.Logic;
 
-using McHelper.Models;
+using McHelper.Domain.Extensions;
+using McHelper.Domain.Models;
 
-public class Logic
+public class Logic(IEnumerable<McMod> mods, IEnumerable<McMod> modsKnown)
 {
-	private List<McMod> _mods;
-	private List<McMod> _modsKnown;
+	private List<McMod> _mods = mods.ToList();
+	private List<McMod> _modsKnown = modsKnown.ToList();
 
 	public IReadOnlyCollection<McMod> Mods => new ReadOnlyCollection<McMod>(_mods);
 	public IReadOnlyCollection<McMod> ModsKnown => new ReadOnlyCollection<McMod>(_modsKnown);
-
-	public Logic(IEnumerable<McMod> mods, IEnumerable<McMod> modsKnown)
-	{
-		_mods = mods.ToList();
-		_modsKnown = modsKnown.ToList();
-	}
 
 	public void Sync(IEnumerable<McMod> modsInput)
 	{
@@ -103,5 +98,4 @@ public class Logic
 		foreach (var u in unused)
 			ModExtensions.Log($"Dependency {u} added in {mod.Name} but not required", ConsoleColor.DarkRed);
 	}
-
 }
