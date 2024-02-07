@@ -1,5 +1,5 @@
 namespace McHelper.Application.Logic;
-
+/*
 using McHelper.Domain.Extensions;
 using McHelper.Domain.Models;
 
@@ -99,3 +99,4 @@ public class Logic(IEnumerable<McMod> mods, IEnumerable<McMod> modsKnown)
 			ModExtensions.Log($"Dependency {u} added in {mod.Name} but not required", ConsoleColor.DarkRed);
 	}
 }
+*/

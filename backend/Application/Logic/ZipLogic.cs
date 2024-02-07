@@ -1,5 +1,5 @@
 namespace McHelper.Application.Logic;
-
+/*
 using McHelper.Domain.Exceptions;
 using McHelper.Domain.Models;
 using Tomlyn;
@@ -96,3 +96,4 @@ public class ZipLogic
 		return json.Id;
 	}
 }
+*/

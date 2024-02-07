@@ -1,5 +1,5 @@
 namespace McHelper.Application.Logic;
-
+/*
 using McHelper.Domain.Exceptions;
 using McHelper.Domain.Extensions;
 using McHelper.Domain.Models;
@@ -104,3 +104,4 @@ public class FileLogic
 	}
 }
 
+*/

@@ -1,5 +1,5 @@
 namespace McHelper.Tests;
-
+/*
 using McHelper.Application.Logic;
 using McHelper.Domain.Extensions;
 using McHelper.Domain.Models;
@@ -83,3 +83,4 @@ public class SyncDependenciesTest
 		_logs = ModExtensions.Logs.AsEnumerable().ToList();
 	}
 }
+*/

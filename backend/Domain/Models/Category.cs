@@ -1,5 +1,6 @@
 namespace McHelper.Domain.Models;
 
+[JsonConverter(typeof(StringEnumConverter))]
 public enum Category
 {
 	Unknown = 0, //to be determined
