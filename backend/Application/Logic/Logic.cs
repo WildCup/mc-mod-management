@@ -3,15 +3,15 @@ namespace McHelper.Application.Logic;
 using McHelper.Domain.Extensions;
 using McHelper.Domain.Models;
 
-public class Logic(IEnumerable<McMod> mods, IEnumerable<McMod> modsKnown)
+public class Logic(IEnumerable<Mod> mods, IEnumerable<Mod> modsKnown)
 {
-	private List<McMod> _mods = mods.ToList();
-	private List<McMod> _modsKnown = modsKnown.ToList();
+	private List<Mod> _mods = mods.ToList();
+	private List<Mod> _modsKnown = modsKnown.ToList();
 
-	public IReadOnlyCollection<McMod> Mods => new ReadOnlyCollection<McMod>(_mods);
-	public IReadOnlyCollection<McMod> ModsKnown => new ReadOnlyCollection<McMod>(_modsKnown);
+	public IReadOnlyCollection<Mod> Mods => new ReadOnlyCollection<Mod>(_mods);
+	public IReadOnlyCollection<Mod> ModsKnown => new ReadOnlyCollection<Mod>(_modsKnown);
 
-	public void Sync(IEnumerable<McMod> modsInput)
+	public void Sync(IEnumerable<Mod> modsInput)
 	{
 		ModExtensions.Log($"Synchronizing {modsInput.Count()} mods", ConsoleColor.Magenta);
 
@@ -32,13 +32,13 @@ public class Logic(IEnumerable<McMod> mods, IEnumerable<McMod> modsKnown)
 		var names = modsInput.Select(m2 => m2.Name);
 		var deleted = _mods.Where(m => !names.Contains(m.Name));
 		foreach (var mod in deleted)
-			ModExtensions.Log($"McMod {mod.Name} was deleted", ConsoleColor.Red);
+			ModExtensions.Log($"Mod {mod.Name} was deleted", ConsoleColor.Red);
 
 		_mods = _mods.Except(deleted).ToList();
 
 		ModExtensions.Log("Synchronization completed", ConsoleColor.Magenta);
 	}
-	private McMod? SyncMod(McMod modInput)
+	private Mod? SyncMod(Mod modInput)
 	{
 		//skip - already added
 		var mod = _mods.FirstOrDefault(m => m.HasExactName(modInput.Name));
@@ -49,7 +49,7 @@ public class Logic(IEnumerable<McMod> mods, IEnumerable<McMod> modsKnown)
 		mod = _mods.FirstOrDefault(m => m.IsSameMod(modInput));
 		if (mod != null)
 		{
-			ModExtensions.Log($"McMod {modInput.Name} was updated from {mod.Name}", ConsoleColor.Yellow);
+			ModExtensions.Log($"Mod {modInput.Name} was updated from {mod.Name}", ConsoleColor.Yellow);
 			mod.Name = modInput.Name;
 			return mod;
 		}
@@ -63,18 +63,18 @@ public class Logic(IEnumerable<McMod> mods, IEnumerable<McMod> modsKnown)
 		mod = _modsKnown.FirstOrDefault(m => m.IsSameMod(modInput));
 		if (mod != null)
 		{
-			ModExtensions.Log($"McMod {modInput.Name} was moved from known {mod.Name}", ConsoleColor.Green);
+			ModExtensions.Log($"Mod {modInput.Name} was moved from known {mod.Name}", ConsoleColor.Green);
 			mod.Name = modInput.Name;
 			_mods.Add(mod);
 			return mod;
 		}
 
 		//add
-		ModExtensions.Log($"McMod {modInput.Name} was added", ConsoleColor.Green);
+		ModExtensions.Log($"Mod {modInput.Name} was added", ConsoleColor.Green);
 		_mods.Add(modInput);
 		return modInput;
 	}
-	private static void SyncDependencies(McMod mod, McMod modInput)
+	private static void SyncDependencies(Mod mod, Mod modInput)
 	{
 		var toAdd = modInput.Dependencies.Except(mod.Dependencies);
 		foreach (var dependency in toAdd)

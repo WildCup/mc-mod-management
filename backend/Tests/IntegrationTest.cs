@@ -5,9 +5,9 @@ using McHelper.Models;
 
 public class IntegrationTest
 {
-	private readonly List<McMod> _mods = new()
+	private readonly List<Mod> _mods = new()
 	{
-		new McMod() {
+		new Mod() {
 			Name = "Xaeros_Minimap_23.6.0_Forge_1.11.5.jar" ,
 			Priority = Priority.Necessary,
 			WorksConfirmed = true,
@@ -15,9 +15,9 @@ public class IntegrationTest
 			Description = "minimap"
 		},
 	};
-	private List<McMod> _modsKnown = new()
+	private List<Mod> _modsKnown = new()
 	{
-		new McMod() {
+		new Mod() {
 			Name = "Xaeros_Minimap_23.6.0_Forge_1.16.5.jar" ,
 			Priority = Priority.Necessary,
 			WorksConfirmed = true,

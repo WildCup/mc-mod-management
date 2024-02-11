@@ -7,10 +7,10 @@ using McHelper.Domain.Models;
 
 public class SyncTest
 {
-	private List<McMod> _mods =
+	private List<Mod> _mods =
 	[
-		new McMod() { Name = "a-1.0" },
-		new McMod() {
+		new Mod() { Name = "a-1.0" },
+		new Mod() {
 			Name = "b-1.0" ,
 			Priority = Priority.Necessary,
 			WorksConfirmed = true,
@@ -18,9 +18,9 @@ public class SyncTest
 			Description = "test mod"
 		},
 	];
-	private List<McMod> _modsKnown =
+	private List<Mod> _modsKnown =
 	[
-		new McMod() {
+		new Mod() {
 			Name = "c-1.0" ,
 			Priority = Priority.Necessary,
 			WorksConfirmed = true,
@@ -102,9 +102,9 @@ public class SyncTest
 
 	private void Act(params string[] names)
 	{
-		var modsInput = new List<McMod>();
+		var modsInput = new List<Mod>();
 		foreach (var name in names)
-			modsInput.Add(new McMod() { Name = name });
+			modsInput.Add(new Mod() { Name = name });
 
 		var main = new Logic(_mods, _modsKnown);
 		main.Sync(modsInput);

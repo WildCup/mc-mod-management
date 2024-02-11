@@ -12,9 +12,9 @@ public class FileLogic
 	private static readonly string[] Ignore = ["tl_skin_cape_forge", "OptiFine-OptiFine", "DynamicSurroundings-1.16.5-4.0.5.0.jar", "Hwyla-forge-1.10.11-B78_1.16.2.jar", "Sledgehammer-1.16.5-2.0.1.jar"];
 	private readonly string[] _names;
 
-	public IReadOnlyCollection<McMod> ModsInput { get; set; }
-	public IReadOnlyCollection<McMod> Mods { get; set; }
-	public IReadOnlyCollection<McMod> ModsKnown { get; set; }
+	public IReadOnlyCollection<Mod> ModsInput { get; set; }
+	public IReadOnlyCollection<Mod> Mods { get; set; }
+	public IReadOnlyCollection<Mod> ModsKnown { get; set; }
 
 	public FileLogic(string input)
 	{
@@ -22,8 +22,8 @@ public class FileLogic
 		var modsData = File.ReadAllText(ModsPath);
 		var knownData = File.ReadAllText(KnownPath);
 
-		Mods = JsonConvert.DeserializeObject<List<McMod>>(modsData) ?? [];
-		ModsKnown = JsonConvert.DeserializeObject<List<McMod>>(knownData) ?? [];
+		Mods = JsonConvert.DeserializeObject<List<Mod>>(modsData) ?? [];
+		ModsKnown = JsonConvert.DeserializeObject<List<Mod>>(knownData) ?? [];
 		_names = Directory.GetFiles(input).Select(n => Path.GetFileName(n) ?? "").Except(Ignore).ToArray();
 
 		if (Mods.Count == 0 || ModsKnown.Count == 0 || _names.Length == 0 || _names.Contains(""))
@@ -36,10 +36,10 @@ public class FileLogic
 		if (duplicates.Any())
 			throw new DuplicatesException(duplicates);
 
-		ModsInput = new ReadOnlyCollection<McMod>(GetBaseMods(input));
+		ModsInput = new ReadOnlyCollection<Mod>(GetBaseMods(input));
 	}
 
-	public static void Save(IEnumerable<McMod> mods, IEnumerable<McMod> modsKnown)
+	public static void Save(IEnumerable<Mod> mods, IEnumerable<Mod> modsKnown)
 	{
 		var modsJson = JsonConvert.SerializeObject(mods.OrderBy(file => file.Name).ToArray(), Formatting.Indented);
 		var modsKnownJson = JsonConvert.SerializeObject(modsKnown.OrderBy(file => file.Name).ToArray(), Formatting.Indented);
@@ -50,11 +50,11 @@ public class FileLogic
 		Console.WriteLine("File names saved to JSON successfully");
 	}
 
-	private List<McMod> GetBaseMods(string input) //read metadata from all mods in folder .minecraft/mods
+	private List<Mod> GetBaseMods(string input) //read metadata from all mods in folder .minecraft/mods
 	{
 		ModExtensions.Log($"Synchronizing dependencies", ConsoleColor.DarkMagenta);
 
-		var modsInput = new List<McMod>();
+		var modsInput = new List<Mod>();
 		foreach (var name in _names)
 		{
 			var zip = ZipFile.OpenRead($"{input}\\{name}") ?? throw new PathNotFoundException($"file {name} could not be opened");

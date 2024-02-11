@@ -449,4 +449,4 @@ $RECYCLE.BIN/
 ##
 .vscode/*
 .editorconfig
-appsettings.Development.json
+appsettings.*.json

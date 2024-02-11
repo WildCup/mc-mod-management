@@ -6,13 +6,13 @@ using McHelper.Domain.Models;
 
 public class SyncDependenciesTest
 {
-	private List<McMod> _mods =
+	private List<Mod> _mods =
 	[
-		new McMod() {
+		new Mod() {
 			Name = "a-1.0",
 			Dependencies = ["xxx-1.0", "yyy-1.0"]
 		},
-		new McMod() { Name = "b-1.0" },
+		new Mod() { Name = "b-1.0" },
 	];
 	private List<string> _logs = [];
 
@@ -75,7 +75,7 @@ public class SyncDependenciesTest
 		Assert.Contains(_logs, l => l.Contains("yyy-1.1 was updated"));
 	}
 
-	private void Act(params McMod[] modsInput)
+	private void Act(params Mod[] modsInput)
 	{
 		var main = new Logic(_mods, []);
 		main.Sync(modsInput);

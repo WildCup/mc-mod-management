@@ -1,6 +1,7 @@
 namespace Api.Controllers;
 
-using Application.Dtos.McMod;
+using Application.Dtos.Mod;
+using McHelper.Application.Services;
 using McHelper.Domain.Models;
 // using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,28 +9,25 @@ using Microsoft.AspNetCore.Mvc;
 // [Authorize]
 [ApiController]
 [Route("mod")]
-public class ModController : ControllerBase
+public class ModController(IModService service) : ControllerBase
 {
-	private readonly List<McMod> _mods = [];
-	public ModController()
-	{
-
-	}
+	private readonly List<Mod> _mods = [];
+	private readonly IModService _service = service;
 
 	[HttpGet]
-	public ActionResult<McMod> GetAll()
+	public ActionResult<IEnumerable<GetModDto>> GetAll()
 	{
-		return Ok(_mods);
+		return Ok(_service.GetAll());
 	}
 
 	[HttpPost]
-	public ActionResult<McMod> Add(AddMcModDto mod)
+	public ActionResult<Mod> Add(AddModDto mod)
 	{
 		return Ok(_mods);
 	}
 
 	[HttpPut("{id:int}")]
-	public ActionResult<McMod> Update(int id, UpdateMcModDto mod)
+	public ActionResult<Mod> Update(int id, UpdateModDto mod)
 	{
 		return Ok(_mods);
 	}

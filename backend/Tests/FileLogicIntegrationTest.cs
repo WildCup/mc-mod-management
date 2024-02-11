@@ -6,7 +6,7 @@ using McHelper.Domain.Models;
 
 public class FileLogicIntegrationTest
 {
-	private readonly IReadOnlyCollection<McMod> _modsInput;
+	private readonly IReadOnlyCollection<Mod> _modsInput;
 
 	private readonly List<string> _logs = [];
 
