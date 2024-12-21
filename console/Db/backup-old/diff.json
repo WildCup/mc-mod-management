@@ -1,0 +1,71 @@
+[
+	{
+		"Id": "",
+		"Name": "ConfigurableCane-1.19.3-2.5.1.jar",
+		"Priority": 3,
+		"WorksConfirmed": true,
+		"Category": "Convention",
+		"Description": "cone grows infinitely",
+		"Dependencies": []
+	},
+	{
+		"Id": "",
+		"Name": "configured-2.1.1-1.19.2.jar",
+		"Priority": 2,
+		"WorksConfirmed": true,
+		"Category": "Client",
+		"Description": "shows guid to config mods",
+		"Dependencies": [
+			"catalogue-1.6.1-1.16.5.jar"
+		]
+	},
+	{
+		"Id": "enemyexpansion",
+		"Name": "EnemyExpansion1.14-1.19.jar",
+		"Priority": 3,
+		"WorksConfirmed": true,
+		"Category": "Difficulty",
+		"Description": "tons of new enemies - they are irritating (flies, meatball, flying pillager, down zombie horse",
+		"Dependencies": [
+			"geckolib-forge-1.19-3.1.40.jar"
+		]
+	},
+	{
+		"Id": "",
+		"Name": "ferritecore-5.0.3-forge.jar",
+		"Priority": 3,
+		"WorksConfirmed": false,
+		"Category": "Helper",
+		"Description": "reduces the memory usage",
+		"Dependencies": []
+	},
+	{
+		"Id": "more_babies",
+		"Name": "More+Babies-forge-1.19.1-1.0.0.jar",
+		"Priority": 3,
+		"WorksConfirmed": true,
+		"Category": "Difficulty",
+		"Description": "more babies",
+		"Dependencies": []
+	},
+	{
+		"Id": "sanitydim",
+		"Name": "sanitydim-mc1.19.2-1.1.0.jar",
+		"Priority": 3,
+		"WorksConfirmed": true,
+		"Category": "Difficulty",
+		"Description": "sanity system",
+		"Dependencies": [
+			"geckolib-forge-1.19-3.1.40.jar"
+		]
+	},
+	{
+		"Id": "sound_physics_remastered",
+		"Name": "soundphysics-forge-1.19.2-1.0.18.jar",
+		"Priority": 3,
+		"WorksConfirmed": true,
+		"Category": "Look",
+		"Description": "sound physics",
+		"Dependencies": []
+	}
+]
