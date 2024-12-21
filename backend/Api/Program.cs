@@ -16,7 +16,10 @@ builder.Services.AddTransient<IModService, ModService>();
 
 //other
 builder.Services.AddAutoMapper(typeof(ModProfile).Assembly);
-builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+builder.Services.AddDbContext<DataContext>();
+// builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+Console.WriteLine(builder.Configuration.GetConnectionString("Default")); //TODO: DELETE THIS!!
 
 //swagger
 builder.Services.AddControllers();
@@ -28,7 +31,7 @@ builder.Services.AddSwaggerGen(c =>
 	c.SwaggerDoc("v1", new OpenApiInfo
 	{
 		Version = "v1",
-		Title = "mod manager API",
+		Title = "mod manager API - " + builder.Environment.EnvironmentName,
 		Description = "mod manager API",
 	});
 });
