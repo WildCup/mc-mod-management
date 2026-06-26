@@ -10,11 +10,11 @@
     ]
   },
   {
-    "Name": "Ager\u0027s\u002Blushroom\u002Bbiome\u002B(1.19.2)\u002Bversion\u002B0.6.jar",
+    "Name": "Ager's+lushroom+biome+(1.19.2)+version+0.6.jar",
     "Priority": "Maybe",
     "WorksConfirmed": false,
     "Category": "Look",
-    "Description": "7 new mobs at new biome - doesn\u0027t work",
+    "Description": "7 new mobs at new biome - doesn't work",
     "Dependencies": []
   },
   {
@@ -116,7 +116,7 @@
     "Priority": "Maybe",
     "WorksConfirmed": true,
     "Category": "Client",
-    "Description": "Better Advancements tries to improve the UI and UX for the advancements system in minecraft 1.12\u002B in a modded environment.  ",
+    "Description": "Better Advancements tries to improve the UI and UX for the advancements system in minecraft 1.12+ in a modded environment.  ",
     "Dependencies": []
   },
   {
@@ -124,20 +124,20 @@
     "Priority": "NotNeeded",
     "WorksConfirmed": false,
     "Category": "Look",
-    "Description": "caves -\u003E big nice caves",
+    "Description": "caves -> big nice caves",
     "Dependencies": [
       "YungsApi-1.16.4-Forge-13.jar"
     ]
   },
   {
-    "Name": "bettercombat-forge-1.7.1\u002B1.19.jar",
+    "Name": "bettercombat-forge-1.7.1+1.19.jar",
     "Priority": "Maybe",
     "WorksConfirmed": true,
     "Category": "Difficulty",
     "Description": "better combat system",
     "Dependencies": [
       "player-animation-lib-forge-1.0.2.jar",
-      "fabric-api-0.77.0\u002B1.19.2.jar",
+      "fabric-api-0.77.0+1.19.2.jar",
       "cloth-config-8.3.115-forge.jar"
     ]
   },
@@ -146,7 +146,7 @@
     "Priority": "NotNeeded",
     "WorksConfirmed": false,
     "Category": "Look",
-    "Description": "room with spawner -\u003E nice small room with spawner",
+    "Description": "room with spawner -> nice small room with spawner",
     "Dependencies": [
       "YungsApi-1.16.4-Forge-13.jar"
     ]
@@ -156,7 +156,7 @@
     "Priority": "Maybe",
     "WorksConfirmed": false,
     "Category": "Look",
-    "Description": "end -\u003E nice big end",
+    "Description": "end -> nice big end",
     "Dependencies": []
   },
   {
@@ -164,31 +164,9 @@
     "Priority": "Maybe",
     "WorksConfirmed": false,
     "Category": "Look",
-    "Description": "stronghold -\u003E nice big stronghold",
+    "Description": "stronghold -> nice big stronghold",
     "Dependencies": [
       "YungsApi-1.16.4-Forge-13.jar"
-    ]
-  },
-  {
-    "Name": "bettervillage-forge-1.19.2-3.1.0.jar",
-    "Priority": "Necessary",
-    "WorksConfirmed": true,
-    "Category": "Look",
-    "Description": "bigger, theme villages - superb but loot is too op",
-    "Dependencies": [
-      "libraryferret",
-      "libraryferret-forge-1.19.2-4.0.0.jar"
-    ]
-  },
-  {
-    "Name": "bettervillage-forge-1.19.2-3.1.0.jar",
-    "Priority": "Necessary",
-    "WorksConfirmed": true,
-    "Category": "Look",
-    "Description": "bigger, theme villages - superb but loot is too op",
-    "Dependencies": [
-      "libraryferret",
-      "libraryferret-forge-1.19.2-4.0.0.jar"
     ]
   },
   {
@@ -237,32 +215,14 @@
     ]
   },
   {
-    "Name": "BoneZone-Forge-1.19.2-1.0.3.jar",
-    "Priority": "Necessary",
-    "WorksConfirmed": true,
-    "Category": "Look",
-    "Description": "beautiful bone blocks",
-    "Dependencies": [
-      "Bookshelf-Forge-1.19.2-16.3.20.jar"
-    ]
-  },
-  {
-    "Name": "BoneZone-Forge-1.19.2-1.0.3.jar",
-    "Priority": "Necessary",
-    "WorksConfirmed": true,
-    "Category": "Look",
-    "Description": "beautiful bone blocks",
-    "Dependencies": [
-      "Bookshelf-Forge-1.19.2-16.3.20.jar"
-    ]
-  },
-  {
     "Name": "BoneZone-Forge-1.19.2-1.0.4.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Look",
     "Description": "beautiful bone blocks",
-    "Dependencies": []
+    "Dependencies": [
+      "Bookshelf-Forge-1.19.2-16.3.20.jar"
+    ]
   },
   {
     "Name": "born_in_chaos_[Forge]1.19.2_1.10.1.jar",
@@ -345,30 +305,6 @@
     "Dependencies": []
   },
   {
-    "Name": "carryon-1.16.5-1.15.5.22.jar",
-    "Priority": "Necessary",
-    "WorksConfirmed": false,
-    "Category": "Convention",
-    "Description": "you can carry items and animals",
-    "Dependencies": []
-  },
-  {
-    "Name": "carryon-forge-1.19.2-2.0.5.17.jar",
-    "Priority": "Necessary",
-    "WorksConfirmed": true,
-    "Category": "Convention",
-    "Description": "carry on",
-    "Dependencies": []
-  },
-  {
-    "Name": "carryon-forge-1.19.2-2.0.5.17.jar",
-    "Priority": "Necessary",
-    "WorksConfirmed": true,
-    "Category": "Convention",
-    "Description": "carry on",
-    "Dependencies": []
-  },
-  {
     "Name": "carryon-forge-1.19.2-2.1.2.23.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
@@ -387,7 +323,7 @@
     ]
   },
   {
-    "Name": "charmofundying-forge-6.2.1\u002B1.19.2.jar",
+    "Name": "charmofundying-forge-6.2.1+1.19.2.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Convention",
@@ -421,7 +357,7 @@
     "Dependencies": []
   },
   {
-    "Name": "Clumps-forge-1.19.2-9.0.0\u002B14.jar",
+    "Name": "Clumps-forge-1.19.2-9.0.0+14.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Helper",
@@ -443,7 +379,7 @@
     "Priority": "Necessary",
     "WorksConfirmed": false,
     "Category": "Difficulty",
-    "Description": "coal \u002B torch explode",
+    "Description": "coal + torch explode",
     "Dependencies": []
   },
   {
@@ -451,7 +387,7 @@
     "Priority": "Maybe",
     "WorksConfirmed": true,
     "Category": "Difficulty",
-    "Description": "torch \u002B coal explode - what for",
+    "Description": "torch + coal explode - what for",
     "Dependencies": []
   },
   {
@@ -463,7 +399,7 @@
     "Dependencies": []
   },
   {
-    "Name": "comforts-forge-6.0.7\u002B1.19.2.jar",
+    "Name": "comforts-forge-6.0.7+1.19.2.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Convention",
@@ -489,7 +425,7 @@
     ]
   },
   {
-    "Name": "Controlling-forge-1.19.2-10.0\u002B7.jar",
+    "Name": "Controlling-forge-1.19.2-10.0+7.jar",
     "Priority": "Maybe",
     "WorksConfirmed": false,
     "Category": "Helper",
@@ -578,7 +514,7 @@
     "Dependencies": []
   },
   {
-    "Name": "Demogorgon\u002BMod\u002B-\u002B1.19.2\u002BForge.jar",
+    "Name": "Demogorgon+Mod+-+1.19.2+Forge.jar",
     "Priority": "Unknown",
     "WorksConfirmed": false,
     "Category": "Unknown",
@@ -680,7 +616,7 @@
     ]
   },
   {
-    "Name": "dungeons-and-taverns-2.0.2\u002Bforge.jar",
+    "Name": "dungeons-and-taverns-2.0.2+forge.jar",
     "Priority": "NotNeeded",
     "WorksConfirmed": true,
     "Category": "Look",
@@ -732,16 +668,6 @@
     ]
   },
   {
-    "Name": "eidolon-0.3.4.jar",
-    "Priority": "Necessary",
-    "WorksConfirmed": true,
-    "Category": "Content",
-    "Description": "dark magic and exorcism",
-    "Dependencies": [
-      "curios-forge-1.19.2-5.1.4.1.jar"
-    ]
-  },
-  {
     "Name": "eidolon-0.3.6.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
@@ -760,7 +686,7 @@
     "Dependencies": []
   },
   {
-    "Name": "elytraslot-forge-6.1.1\u002B1.19.2.jar",
+    "Name": "elytraslot-forge-6.1.1+1.19.2.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Convention",
@@ -980,14 +906,6 @@
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Difficulty",
-    "Description": "first aid",
-    "Dependencies": []
-  },
-  {
-    "Name": "firstaid-1.12.0.jar",
-    "Priority": "Necessary",
-    "WorksConfirmed": true,
-    "Category": "Difficulty",
     "Description": "bandages, separate hearts",
     "Dependencies": []
   },
@@ -1141,7 +1059,7 @@
     "Dependencies": []
   },
   {
-    "Name": "Horror\u002BElements\u002Bmod\u002B1.16.5_Halloween_update.jar",
+    "Name": "Horror+Elements+mod+1.16.5_Halloween_update.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Look",
@@ -1153,7 +1071,7 @@
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Client",
-    "Description": "Here\u0027s What You\u0027re Looking At",
+    "Description": "Here's What You're Looking At",
     "Dependencies": []
   },
   {
@@ -1181,7 +1099,7 @@
     "Priority": "NotNeeded",
     "WorksConfirmed": false,
     "Category": "Content",
-    "Description": "tons of new bosses and items - doesn\u0027t work",
+    "Description": "tons of new bosses and items - doesn't work",
     "Dependencies": []
   },
   {
@@ -1250,14 +1168,6 @@
     "WorksConfirmed": true,
     "Category": "Convention",
     "Description": "sort inventory middle click",
-    "Dependencies": []
-  },
-  {
-    "Name": "invhud.forge.1.19-3.4.7.jar",
-    "Priority": "Necessary",
-    "WorksConfirmed": false,
-    "Category": "Convention",
-    "Description": "Show items",
     "Dependencies": []
   },
   {
@@ -1383,7 +1293,7 @@
     "Priority": "NotNeeded",
     "WorksConfirmed": false,
     "Category": "Difficulty",
-    "Description": "a few new bosses -doesn\u0027t work",
+    "Description": "a few new bosses -doesn't work",
     "Dependencies": [
       "citadel-2.1.4-1.19.jar"
     ]
@@ -1405,11 +1315,11 @@
     "Dependencies": []
   },
   {
-    "Name": "logprot-1.16-1.6.jar",
-    "Priority": "Necessary",
+    "Name": "logprot-1.19.2-1.9.jar",
+    "Priority": "Unknown",
     "WorksConfirmed": false,
-    "Category": "Convention",
-    "Description": "protects you when you login",
+    "Category": "Unknown",
+    "Description": "",
     "Dependencies": []
   },
   {
@@ -1586,7 +1496,7 @@
     "Dependencies": []
   },
   {
-    "Name": "More\u002BBabies-forge-1.19.1-1.0.0.jar",
+    "Name": "More+Babies-forge-1.19.1-1.0.0.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Difficulty",
@@ -1669,7 +1579,7 @@
     ]
   },
   {
-    "Name": "nocube\u0027s_zombie_mobs_1.4.0_forge_1.19.2.jar",
+    "Name": "nocube's_zombie_mobs_1.4.0_forge_1.19.2.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Difficulty",
@@ -1782,16 +1692,6 @@
     "Name": "PlayerRevive_FORGE_v2.0.14_mc1.19.2.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
-    "Category": "Convention",
-    "Description": "can revive ally",
-    "Dependencies": [
-      "CreativeCore_FORGE_v2.9.4_mc1.19.2.jar"
-    ]
-  },
-  {
-    "Name": "PlayerRevive_FORGE_v2.0.14_mc1.19.2.jar",
-    "Priority": "Necessary",
-    "WorksConfirmed": true,
     "Category": "Difficulty",
     "Description": "Player Revive",
     "Dependencies": [
@@ -1833,7 +1733,7 @@
     "Dependencies": []
   },
   {
-    "Name": "polymorph-forge-0.46.6\u002B1.19.2.jar",
+    "Name": "polymorph-forge-0.46.6+1.19.2.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Helper",
@@ -1901,7 +1801,7 @@
     "Dependencies": []
   },
   {
-    "Name": "RegionsUnexploredForge-0.4.1_1\u002B1.19.2.jar",
+    "Name": "RegionsUnexploredForge-0.4.1_1+1.19.2.jar",
     "Priority": "Unknown",
     "WorksConfirmed": false,
     "Category": "Unknown",
@@ -1927,7 +1827,7 @@
     "Dependencies": []
   },
   {
-    "Name": "repurposed_structures_forge-6.3.24\u002B1.19.2.jar",
+    "Name": "repurposed_structures_forge-6.3.24+1.19.2.jar",
     "Priority": "Unknown",
     "WorksConfirmed": false,
     "Category": "Unknown",
@@ -1975,11 +1875,11 @@
     "Dependencies": []
   },
   {
-    "Name": "Ryan\u0027s\u002BZombies\u002Bv5.jar",
+    "Name": "Ryan's+Zombies+v5.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Difficulty",
-    "Description": "a few superb zombies - doesn\u0027t work",
+    "Description": "a few superb zombies - doesn't work",
     "Dependencies": []
   },
   {
@@ -2003,7 +1903,7 @@
     ]
   },
   {
-    "Name": "ScalingHealth-1.19.2-7.0.0\u002B6.jar",
+    "Name": "ScalingHealth-1.19.2-7.0.0+6.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Difficulty",
@@ -2013,7 +1913,7 @@
     ]
   },
   {
-    "Name": "ScalingHealth-1.19.2-7.0.1\u002B7.jar",
+    "Name": "ScalingHealth-1.19.2-7.0.1+7.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Difficulty",
@@ -2123,7 +2023,7 @@
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Helper",
-    "Description": "monitoring tool - I don\u0027t know how to use it",
+    "Description": "monitoring tool - I don't know how to use it",
     "Dependencies": []
   },
   {
@@ -2163,7 +2063,7 @@
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Difficulty",
-    "Description": "infected zombies - it\u0027s hard, world gets infected. Fully configured",
+    "Description": "infected zombies - it's hard, world gets infected. Fully configured",
     "Dependencies": []
   },
   {
@@ -2215,7 +2115,7 @@
     "Dependencies": []
   },
   {
-    "Name": "TaxOceanVillager\u002BM.1.19\u002BForM-1.1.2.jar",
+    "Name": "TaxOceanVillager+M.1.19+ForM-1.1.2.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Look",
@@ -2237,7 +2137,7 @@
     "Priority": "NotNeeded",
     "WorksConfirmed": true,
     "Category": "Difficulty",
-    "Description": "scary mobs and overpowered weapons - doesn\u0027t work",
+    "Description": "scary mobs and overpowered weapons - doesn't work",
     "Dependencies": []
   },
   {
@@ -2402,7 +2302,7 @@
     "Priority": "NotNeeded",
     "WorksConfirmed": true,
     "Category": "Difficulty",
-    "Description": "new undeads - doesn\u0027t work",
+    "Description": "new undeads - doesn't work",
     "Dependencies": []
   },
   {
@@ -2414,7 +2314,7 @@
     "Dependencies": []
   },
   {
-    "Name": "Undefeatables\u002B1.7.jar",
+    "Name": "Undefeatables+1.7.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
     "Category": "Difficulty",
@@ -2430,23 +2330,23 @@
     "Dependencies": []
   },
   {
-    "Name": "Unique\u002BEnchantments-1.19.2-4.0.2.1.jar",
+    "Name": "Unique+Enchantments+Apex-1.19.2-3.0.1.jar",
     "Priority": "Unknown",
     "WorksConfirmed": false,
     "Category": "Unknown",
     "Description": "",
     "Dependencies": [
-      "Unique\u002BEnchantments\u002BBase-1.19.2-3.0.2.1.jar"
+      "Unique+Enchantments+Base-1.19.2-3.0.2.1.jar"
     ]
   },
   {
-    "Name": "Unique\u002BEnchantments\u002BApex-1.19.2-3.0.1.jar",
+    "Name": "Unique+Enchantments-1.19.2-4.0.2.1.jar",
     "Priority": "Unknown",
     "WorksConfirmed": false,
     "Category": "Unknown",
     "Description": "",
     "Dependencies": [
-      "Unique\u002BEnchantments\u002BBase-1.19.2-3.0.2.1.jar"
+      "Unique+Enchantments+Base-1.19.2-3.0.2.1.jar"
     ]
   },
   {
@@ -2529,10 +2429,28 @@
     "Priority": "Necessary",
     "WorksConfirmed": false,
     "Category": "Client",
-    "Description": "Here\u0027s What You\u0027re Looking At - addon",
+    "Description": "Here's What You're Looking At - addon",
     "Dependencies": [
       "Hwyla-forge-1.10.11-B78_1.16.2.jar",
       "Bookshelf-Forge-1.16.5-10.4.32.jar"
+    ]
+  },
+  {
+    "Name": "the-banished-1.1-1.19.2.jar",
+    "Priority": "Unknown",
+    "WorksConfirmed": true,
+    "Category": "Content",
+    "Description": "creatures, bosses, items",
+    "Dependencies": []
+  },
+  {
+    "Name": "The-Hordes-1.19.2-1.2.0.jar",
+    "Priority": "Maybe",
+    "WorksConfirmed": false,
+    "Category": "Difficulty",
+    "Description": "hordes of zombies every few days - didnt work",
+    "Dependencies": [
+      "Atlas-Lib-1.19.2-1.1.6.jar"
     ]
   },
   {
@@ -2544,16 +2462,6 @@
     "Dependencies": []
   },
   {
-    "Name": "waystones-forge-1.19.2-11.4.1.jar",
-    "Priority": "Necessary",
-    "WorksConfirmed": true,
-    "Category": "Content",
-    "Description": "waystones",
-    "Dependencies": [
-      "balm-forge-1.19.2-4.5.7.jar"
-    ]
-  },
-  {
     "Name": "waystones-forge-1.19.2-11.4.2.jar",
     "Priority": "Necessary",
     "WorksConfirmed": true,
@@ -2562,14 +2470,6 @@
     "Dependencies": [
       "balm-forge-1.19.2-4.6.0.jar"
     ]
-  },
-  {
-    "Name": "weeping_angels-36.0.1.jar",
-    "Priority": "Necessary",
-    "WorksConfirmed": false,
-    "Category": "Difficulty",
-    "Description": "doctor who creatures",
-    "Dependencies": []
   },
   {
     "Name": "Weeping-Angels-43.0.9-forge.jar",
@@ -2590,7 +2490,7 @@
     ]
   },
   {
-    "Name": "wizards-fabric-0.9.17\u002B1.19.jar",
+    "Name": "wizards-fabric-0.9.17+1.19.jar",
     "Priority": "Unknown",
     "WorksConfirmed": false,
     "Category": "Unknown",
@@ -2693,7 +2593,7 @@
     "Dependencies": []
   },
   {
-    "Name": "Zombie\u002BExtreme\u002B1.19.2\u002B0.2.3.jar",
+    "Name": "Zombie+Extreme+1.19.2+0.2.3.jar",
     "Priority": "Maybe",
     "WorksConfirmed": true,
     "Category": "Difficulty",
@@ -2701,7 +2601,7 @@
     "Dependencies": []
   },
   {
-    "Name": "Zombie\u002BInvasion\u002B1.2.0\u002Bfor\u002BMinecraft\u002B1.19.2.jar",
+    "Name": "Zombie+Invasion+1.2.0+for+Minecraft+1.19.2.jar",
     "Priority": "Unknown",
     "WorksConfirmed": false,
     "Category": "Unknown",

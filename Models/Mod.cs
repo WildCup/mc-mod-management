@@ -1,9 +1,10 @@
-using McHelper.Domain.Models;
+using System.Text.Json.Serialization;
+
+namespace McHelper.Domain.Models;
 
 /// <summary>
 /// Each 'Mod' instance represents 1 file in .minecraft/mods folder
 /// Name is used as the mod unique id for lookup
-/// Rest is manually edited (directly in json file)
 /// </summary>
 public class Mod
 {
@@ -25,9 +26,15 @@ public class Mod
 	/// <summary> Exact file name of all dependencies </summary>
 	public List<string> Dependencies { get; set; } = [];
 
-	public bool IsSameMod(Mod other)
-	{
-		return Name.Equals(other.Name, StringComparison.InvariantCultureIgnoreCase);
-	}
-}
+	/// <summary>
+	/// Whether the file currently exists in the .minecraft/mods folder.
+	/// Computed live from a folder scan, never persisted to the db.
+	/// </summary>
+	[JsonIgnore]
+	public bool Installed { get; set; }
 
+	public bool IsSameMod(Mod other) => IsSameMod(other.Name);
+
+	public bool IsSameMod(string otherName) =>
+		Name.Equals(otherName, StringComparison.InvariantCultureIgnoreCase);
+}

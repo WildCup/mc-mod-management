@@ -1,83 +1,64 @@
+using McHelper.Domain.Models;
 using McHelper.Extensions;
 
 namespace McHelper.Logic;
 
 /// <summary>
-/// Responsible for syncing current mods with known mods 
-/// Fill in all mods info based on known mods
+/// In-memory db state and the actions the UI triggers.
+/// Single db model: "installed" is observed live from the mods folder, never stored.
 /// </summary>
-public class Logic(IEnumerable<Mod> mods, IEnumerable<Mod> modsKnown)
+public class ModService(ModsRepo repo, FtpConfig ftpConfig, Paths paths)
 {
-	private List<Mod> _mods = mods.ToList();
-	private List<Mod> _modsKnown = modsKnown.ToList();
+	public List<Mod> Mods { get; private set; } = [];
 
-	public IReadOnlyCollection<Mod> Mods => _mods;
-	public IReadOnlyCollection<Mod> ModsKnown => _modsKnown;
-
-	public void Sync(IEnumerable<Mod> modsInput)
+	/// <summary> Load db, scan folder, flag installed, add newly found files. </summary>
+	public void Refresh()
 	{
-		Logger.LogLine($"Synchronizing {modsInput.Count()} mods", ConsoleColor.Magenta);
+		Mods = repo.Load();
+		var installed = repo.ScanInstalled();
 
-		//sync - save new mods to known
-		_modsKnown = _modsKnown.Where(b => !_mods.Any(m => m.IsSameMod(b))).ToList();
-		_modsKnown.AddRange(_mods);
-
-		//add - all mods, and dependencies if not added
-		foreach (var modInput in modsInput)
+		foreach (var name in installed)
 		{
-			SyncMod(modInput);
-			SyncDependencies(modInput, modsInput);
+			if (!Mods.Any(m => m.IsSameMod(name)))
+			{
+				Mods.Add(new Mod { Name = name });
+				Logger.LogLine($"New mod found: {name}", ConsoleColor.Green);
+			}
 		}
 
-		//delete - delete mods that were not found in .minecraft/mods but are added
-		var names = modsInput.Select(x => x.Name);
-		var deleted = _mods.Where(m => !names.Contains(m.Name));
-		foreach (var mod in deleted)
-			Logger.LogLine($"Mod {mod.Name} was deleted", ConsoleColor.Red);
+		var installedSet = installed.ToHashSet(StringComparer.InvariantCultureIgnoreCase);
+		foreach (var mod in Mods)
+			mod.Installed = installedSet.Contains(mod.Name);
 
-		_mods = _mods.Except(deleted).ToList();
-
-		Logger.LogLine("Synchronization completed", ConsoleColor.Magenta);
+		Logger.LogLine($"DB: {Mods.Count} mods, {installedSet.Count} installed", ConsoleColor.Magenta);
 	}
 
-	private void SyncMod(Mod modInput)
+	public void Save() => repo.Save(Mods);
+
+	public void Delete(Mod mod)
 	{
-		//skip - already added
-		var mod = _mods.FirstOrDefault(m => m.IsSameMod(modInput));
-		if (mod != null)
-			return;
+		_ = Mods.Remove(mod);
+		Logger.LogLine($"Removed {mod.Name} from db", ConsoleColor.Red);
+	}
 
-		//ignore if not added and is a dependency
-		mod = _mods.FirstOrDefault(m => m.Dependencies.Contains(modInput.Name));
-		if (mod != null)
-			return;
+	private IEnumerable<Mod> Installed => Mods.Where(m => m.Installed);
 
-		//move from known and update - mod is not added but is known
-		mod = _modsKnown.FirstOrDefault(m => m.IsSameMod(modInput));
-		if (mod != null)
+	public void FtpMods(bool upload) => WithFtp(ftp => ftp.SyncMods(Installed, upload));
+	public void FtpConfigFiles(bool upload) => WithFtp(ftp => ftp.SyncConfig(upload));
+	public void FtpDatapacks(bool upload) => WithFtp(ftp => ftp.SyncDatapacks(upload));
+	public void FtpServerConfig(bool upload) => WithFtp(ftp => ftp.SyncServerConfig(upload));
+
+	private void WithFtp(Action<SyncLogic> action)
+	{
+		try
 		{
-			Logger.LogLine($"Mod {modInput.Name} was moved from known {mod.Name}", ConsoleColor.Green);
-			_mods.Add(mod);
-			return;
+			using var ftpConnector = new FtpConnector(ftpConfig);
+			var ftp = new SyncLogic(ftpConnector, ftpConfig, paths);
+			action(ftp);
 		}
-
-		//add
-		Logger.LogLine($"Mod {modInput.Name} was added", ConsoleColor.Green);
-		_mods.Add(modInput);
-		return;
-	}
-
-	private static void SyncDependencies(Mod mod, IEnumerable<Mod> all)
-	{
-		foreach (var dependencyName in mod.Dependencies)
+		catch (Exception ex)
 		{
-			var dependencyMod = all.FirstOrDefault(m => m.IsSameMod(new Mod() { Name = dependencyName }));
-			if (dependencyMod != null) //skip - already added
-				continue;
-
-			//remove not found dependency
-			_ = mod.Dependencies.Remove(dependencyName);
-			Logger.LogLine($"Dependency {dependencyName} was deleted", ConsoleColor.DarkRed);
+			Logger.LogLine($"FTP failed: {ex.Message}", ConsoleColor.Red);
 		}
 	}
 }

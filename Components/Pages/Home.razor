@@ -1,0 +1,167 @@
+@page "/"
+@rendermode InteractiveServer
+@implements IDisposable
+@inject ModService Service
+@inject FtpConfig Ftp
+
+<h1>MC Mod Manager</h1>
+
+<section class="actions">
+    <button class="btn" disabled="@_busy" @onclick="Refresh">Refresh / Scan</button>
+    <button class="btn primary" disabled="@_busy" @onclick="Save">Save db</button>
+
+    <span class="sep"></span>
+
+    <button class="btn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => Service.FtpMods(false))">Mods: diff</button>
+    <button class="btn warn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => Service.FtpMods(true))">Mods: upload</button>
+
+    <button class="btn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => Service.FtpConfigFiles(false))">Config: diff</button>
+    <button class="btn warn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => Service.FtpConfigFiles(true))">Config: upload</button>
+
+    <button class="btn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => Service.FtpDatapacks(false))">Datapacks: diff</button>
+    <button class="btn warn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => Service.FtpDatapacks(true))">Datapacks: upload</button>
+
+    <button class="btn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => Service.FtpServerConfig(false))">Serverconfig: diff</button>
+    <button class="btn warn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => Service.FtpServerConfig(true))">Serverconfig: upload</button>
+</section>
+
+@if (!FtpReady)
+{
+    <p class="hint">FTP not configured — set <code>App:Ftp:Username</code>, <code>Password</code>, <code>BasePath</code> via user-secrets to enable upload/diff.</p>
+}
+
+<section class="toolbar">
+    <input class="search" placeholder="search name / description..." @bind="_search" @bind:event="oninput" />
+    <label><input type="checkbox" @bind="_installedOnly" /> installed only</label>
+    <span class="count">@Filtered.Count() / @Service.Mods.Count mods</span>
+</section>
+
+<table class="mods">
+    <thead>
+        <tr>
+            <th>Mod</th>
+            <th>Priority</th>
+            <th>Category</th>
+            <th>Works</th>
+            <th>Description</th>
+            <th>Dependencies</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mod in Filtered)
+        {
+            <tr class="@(mod.Installed ? "installed" : "absent")">
+                <td class="name">
+                    <span class="dot" title="@(mod.Installed ? "installed" : "not installed")"></span>
+                    @mod.Name
+                </td>
+                <td>
+                    <select @bind="mod.Priority">
+                        @foreach (var p in Enum.GetValues<Priority>())
+                        {
+                            <option value="@p">@p</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <select @bind="mod.Category">
+                        @foreach (var c in Enum.GetValues<Category>())
+                        {
+                            <option value="@c">@c</option>
+                        }
+                    </select>
+                </td>
+                <td class="center"><input type="checkbox" @bind="mod.WorksConfirmed" /></td>
+                <td><input class="desc" @bind="mod.Description" /></td>
+                <td>
+                    <textarea class="deps" rows="1"
+                              value="@string.Join("\n", mod.Dependencies)"
+                              @onchange="e => SetDeps(mod, e.Value?.ToString())"></textarea>
+                </td>
+                <td><button class="btn tiny danger" disabled="@_busy" @onclick="() => Service.Delete(mod)">✕</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<section class="log">
+    <div class="log-head">
+        <strong>Output</strong>
+        <button class="btn tiny" @onclick="() => _log.Clear()">clear</button>
+        @if (_busy)
+        {
+            <span class="spinner">working…</span>
+        }
+    </div>
+    <pre>@foreach (var e in _log)
+{<span style="color:@Css(e.Color)">@e.Message</span>}</pre>
+</section>
+
+@code {
+    private readonly List<LogEntry> _log = new();
+    private string _search = "";
+    private bool _installedOnly;
+    private bool _busy;
+
+    private bool FtpReady =>
+        !string.IsNullOrWhiteSpace(Ftp.Username) && !string.IsNullOrWhiteSpace(Ftp.BasePath);
+
+    private IEnumerable<Mod> Filtered => Service.Mods
+        .Where(m => !_installedOnly || m.Installed)
+        .Where(m => string.IsNullOrWhiteSpace(_search)
+            || m.Name.Contains(_search, StringComparison.OrdinalIgnoreCase)
+            || m.Description.Contains(_search, StringComparison.OrdinalIgnoreCase))
+        .OrderBy(m => m.Name, StringComparer.OrdinalIgnoreCase);
+
+    protected override void OnInitialized()
+    {
+        Logger.OnLog += AppendLog;
+        Refresh();
+    }
+
+    private void Refresh()
+    {
+        try { Service.Refresh(); }
+        catch (Exception ex) { AppendLog(new LogEntry($"Load failed: {ex.Message}\n", ConsoleColor.Red)); }
+    }
+
+    private void Save()
+    {
+        try { Service.Save(); }
+        catch (Exception ex) { AppendLog(new LogEntry($"Save failed: {ex.Message}\n", ConsoleColor.Red)); }
+    }
+
+    private async Task Run(Action action)
+    {
+        _busy = true;
+        try { await Task.Run(action); }
+        finally { _busy = false; }
+    }
+
+    private static void SetDeps(Mod mod, string? value)
+    {
+        mod.Dependencies = (value ?? "")
+            .Split(['\n', ','], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .ToList();
+    }
+
+    private void AppendLog(LogEntry entry)
+    {
+        _log.Add(entry);
+        if (_log.Count > 1000)
+            _log.RemoveRange(0, _log.Count - 1000);
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private static string Css(ConsoleColor c) => c switch
+    {
+        ConsoleColor.Red or ConsoleColor.DarkRed => "#e05555",
+        ConsoleColor.Green or ConsoleColor.DarkGreen => "#3fb950",
+        ConsoleColor.Magenta or ConsoleColor.DarkMagenta => "#c678dd",
+        ConsoleColor.DarkGray or ConsoleColor.Gray => "#888",
+        _ => "#ddd",
+    };
+
+    public void Dispose() => Logger.OnLog -= AppendLog;
+}

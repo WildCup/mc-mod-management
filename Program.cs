@@ -1,14 +1,27 @@
-﻿using McHelper;
+using McHelper.Components;
+using McHelper.Extensions;
 using McHelper.Logic;
 
-var file = new FileLogic();
-var logic = new Logic(file.Mods, file.ModsKnown);
+var builder = WebApplication.CreateBuilder(args);
 
-logic.Sync(file.ModsInput);
-file.Save(logic.Mods, logic.ModsKnown);
+//config
+var secrets = builder.Configuration.GetSection("App").Get<Config>() ?? throw new YouIdiotException("Secrets could not be loaded!");
+builder.Services.AddSingleton(secrets);
+builder.Services.AddSingleton(secrets.Ftp);
+builder.Services.AddSingleton(sp => new Paths(secrets, builder.Environment.ContentRootPath));
 
-var ftp = new FtpLogic();
-ftp.Sync(file.ModsInput, logic.Mods, true);
-// ftp.SyncConfig(false);
-// ftp.SyncDatapacks(false);
-// ftp.SyncServerConfig(false);
+//services
+builder.Services.AddSingleton<ModsRepo>();
+builder.Services.AddSingleton<ModService>();
+
+//razor
+builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+
+var app = builder.Build();
+
+app.UseStaticFiles();
+app.UseAntiforgery();
+app.MapRazorComponents<App>()
+	.AddInteractiveServerRenderMode();
+
+app.Run();
