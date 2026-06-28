@@ -2,49 +2,141 @@
 @rendermode InteractiveServer
 @implements IDisposable
 @inject ModService Service
-@inject FtpConfig Ftp
+@inject ServerConfig Server
 @using System.Net
 @using System.Text
 
 <div class="head">
     <h1>MC Mod Manager</h1>
-    <div class="stats">
-        <button class="chip @(NoFilter ? "on" : "")" @onclick="ShowAll">
-            <span class="n">@Service.Mods.Count</span> total
-        </button>
-        <button class="chip @(_installedOnly ? "on" : "")" @onclick="() => Toggle(ref _installedOnly)">
-            <span class="n">@InstalledCount</span> installed
-        </button>
-        <button class="chip danger @(_problemsOnly ? "on" : "")" @onclick="() => Toggle(ref _problemsOnly)">
-            <span class="n">@ProblemCount</span> problems
-        </button>
-        @if (Service.Unassigned.Count > 0)
-        {
-            <span class="chip warn"><span class="n">@Service.Unassigned.Count</span> unassigned</span>
-        }
-    </div>
+    <nav class="tabs">
+        <button class="tab @(_tab == Tab.Mods ? "on" : "")" disabled="@_busy" @onclick="() => _tab = Tab.Mods">Local mods</button>
+        <button class="tab @(_tab == Tab.Server ? "on" : "")" disabled="@_busy" @onclick="ShowServer">Server</button>
+    </nav>
 </div>
 
+@if (_tab == Tab.Mods)
+{
+    <section class="actions">
+        <div class="group">
+            <button class="btn" disabled="@_busy" @onclick="Refresh">↻ Refresh / Scan</button>
+        </div>
+        <span class="sep"></span>
+        <div class="stats">
+            <button class="chip @(NoFilter ? "on" : "")" @onclick="ShowAll">
+                <span class="n">@Service.Mods.Count</span> total
+            </button>
+            <button class="chip @(_installedOnly ? "on" : "")" @onclick="() => Toggle(ref _installedOnly)">
+                <span class="n">@InstalledCount</span> installed
+            </button>
+            <button class="chip danger @(_problemsOnly ? "on" : "")" @onclick="() => Toggle(ref _problemsOnly)">
+                <span class="n">@ProblemCount</span> problems
+            </button>
+            @if (Service.Unassigned.Count > 0)
+            {
+                <span class="chip warn"><span class="n">@Service.Unassigned.Count</span> unassigned</span>
+            }
+        </div>
+    </section>
+}
+
+@if (_tab == Tab.Server)
+{
 <section class="actions">
     <div class="group">
         <button class="btn" disabled="@_busy" @onclick="Refresh">↻ Refresh / Scan</button>
     </div>
     <span class="sep"></span>
-    <span class="glabel">diff / upload</span>
-    @foreach (var sync in SyncTargets)
+    <div class="group">
+        <span class="server @ServerState" title="@ServerTitle">
+            <span class="led"></span> Server @ServerLabel
+        </span>
+        <button class="btn primary" disabled="@(_busy || !Online || TotalDiff == 0)" @onclick="Sync">
+            Sync@(TotalDiff > 0 ? $" ({TotalDiff})" : "")
+        </button>
+    </div>
+    @if (_progress is { } prog)
     {
-        <div class="group">
-            <button class="btn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => sync.Action(false))">@sync.Label</button>
-            <button class="btn warn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => sync.Action(true))" title="upload @sync.Label">↑</button>
+        <div class="progress" title="@prog.Label/@prog.File">
+            <div class="bar"><div class="fill" style="width:@prog.Percent%"></div></div>
+            <span class="ptext">
+                <strong>@prog.Done / @prog.Total</strong>
+                @if (!string.IsNullOrEmpty(prog.File))
+                {
+                    <span class="pfile">@(prog.Kind == DeltaKind.Remove ? "removing" : "uploading") @prog.Label/@prog.File</span>
+                }
+            </span>
         </div>
+    }
+    else
+    {
+        @if (Online && _sync!.Forge is { } forge)
+        {
+            @if (forge.Match)
+            {
+                <span class="chip static" title="local and server run the same Forge">Forge @forge.Local ✓</span>
+            }
+            else if (forge.Known)
+            {
+                <span class="chip bad" title="server runs a different Forge — fix it before syncing mods">
+                    ⚠ Forge: you @forge.Local · server @forge.Remote
+                </span>
+            }
+            else if (forge.Local is not null && forge.Remote is null)
+            {
+                <span class="chip bad" title="no Forge found on the server">⚠ Forge @forge.Local · server: none</span>
+            }
+        }
+        @if (Online)
+        {
+            <span class="glabel">@(TotalDiff == 0 ? "✓ up to date" : $"{TotalDiff} file{(TotalDiff == 1 ? "" : "s")} to sync")</span>
+        }
     }
 </section>
 
-@if (!FtpReady)
+@if (!ServerReady)
 {
-    <p class="hint">FTP not configured — set <code>App:Ftp:Username</code>, <code>Password</code>, <code>BasePath</code> via user-secrets to enable upload/diff.</p>
+    <p class="hint">Server not configured — set <code>BasePath</code> (the Minecraft server folder on the host) and <code>Username</code> under <code>App:Sftp</code> or <code>App:Ftp</code> in appsettings/user-secrets.</p>
 }
 
+@if (Online)
+{
+    <section class="diff">
+        @{ var gi = 0; }
+        @foreach (var t in _sync!.Targets)
+        {
+            <div class="tgroup @(t.Total == 0 ? "clean" : "")">
+                <div class="tgroup-head">
+                    <strong>@t.Label</strong>
+                    <span class="srv-count" title="files currently on the server">@t.RemoteCount on server</span>
+                    @if (t.Adds > 0) { <span class="tag add">+@t.Adds new</span> }
+                    @if (t.Changes > 0) { <span class="tag change">~@t.Changes changed</span> }
+                    @if (t.Removes > 0) { <span class="tag remove">−@t.Removes remove</span> }
+                    @if (t.Total == 0) { <span class="tag ok">✓ in sync</span> }
+                </div>
+                @if (t.Total > 0)
+                {
+                    <ul class="flist">
+                        @foreach (var d in t.Deltas)
+                        {
+                            var idx = gi;
+                            gi++;
+                            <li class="frow @KindCss(d.Kind) @RowState(idx)">
+                                <span class="fglyph">@Glyph(idx, d.Kind)</span>
+                                <span class="fpath">@d.RelativePath</span>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+    </section>
+}
+
+<ServerControlPanel />
+}
+
+@if (_tab == Tab.Mods)
+{
 <datalist id="mod-ids">
     @foreach (var id in ModIds)
     {
@@ -251,6 +343,7 @@
     </tbody>
 </table>
 </div>
+}
 
 <section class="log">
     <div class="log-head">
@@ -295,21 +388,64 @@
     private ElementReference _editRef;
     private bool _focusNext;
 
-    private bool FtpReady =>
-        !string.IsNullOrWhiteSpace(Ftp.Username) && !string.IsNullOrWhiteSpace(Ftp.BasePath);
+    private enum Tab { Mods, Server }
+    private Tab _tab = Tab.Mods;
+
+    // non-null while a sync is uploading, drives the progress bar
+    private SyncProgress? _progress;
+
+    // result of the last diff/sync attempt; null until we've checked the server
+    private SyncResult? _sync;
+    private int TotalDiff => _sync?.Total ?? 0;
+
+    private bool ServerReady => Server.Ready;       // enough config to attempt a connection
+    private bool Online => _sync is { Ok: true };   // last attempt actually reached the server
+
+    private string ServerState =>
+        !ServerReady ? "" :
+        Online ? "on" :
+        _sync is { Ok: false } ? "off" : "";
+
+    private string ServerLabel =>
+        !ServerReady ? "not set" :
+        _busy && _sync is null ? "checking…" :
+        Online ? "On" :
+        _sync is { Ok: false } ? "Off" : "?";
+
+    // live per-file state during a sync: rows before the cursor are done, the cursor is uploading, the rest pending.
+    // the flat row index matches SyncAll's order (targets in order, deltas in order), which is what progress reports.
+    private string RowState(int idx)
+    {
+        if (_progress is null) return "todo";          // showing a diff, not syncing
+        if (idx < _progress.Done) return "done";
+        if (idx == _progress.Done) return "active";
+        return "pending";
+    }
+
+    private string Glyph(int idx, DeltaKind kind) => RowState(idx) switch
+    {
+        "done" => "✓",
+        "active" => "↑",
+        _ => kind switch { DeltaKind.Add => "+", DeltaKind.Change => "~", DeltaKind.Remove => "−", _ => "•" },
+    };
+
+    private static string KindCss(DeltaKind kind) => kind switch
+    {
+        DeltaKind.Add => "add",
+        DeltaKind.Change => "change",
+        DeltaKind.Remove => "remove",
+        _ => "",
+    };
+
+    private string ServerTitle =>
+        !ServerReady ? "no server configured" :
+        Online ? $"{Server.Kind} {Server.Username}@{Server.Host} — reachable" :
+        _sync is { Ok: false } ? $"cannot reach {Server.Kind} {Server.Host}: {_sync.Error}" :
+        $"{Server.Kind} {Server.Host} — not checked yet";
 
     private bool NoFilter => !_installedOnly && !_problemsOnly;
     private int InstalledCount => Service.Mods.Count(m => m.Installed);
     private int ProblemCount => Service.Mods.Count(HasProblem);
-
-    private record SyncTarget(string Label, Action<bool> Action);
-    private IEnumerable<SyncTarget> SyncTargets =>
-    [
-        new("Mods", Service.FtpMods),
-        new("Config", Service.FtpConfigFiles),
-        new("Datapacks", Service.FtpDatapacks),
-        new("Serverconfig", Service.FtpServerConfig),
-    ];
 
     private IEnumerable<string> ModIds => Service.Mods
         .Select(m => m.Id)
@@ -430,17 +566,24 @@
         }
     }
 
+    // open the Server tab and auto-detect the diff on first visit, so counts show without a click
+    private async Task ShowServer()
+    {
+        _tab = Tab.Server;
+        if (ServerReady && !_diffedOnce)
+        {
+            _diffedOnce = true;
+            await Run(CheckDiff);
+        }
+    }
+
     protected override void OnInitialized()
     {
         Logger.OnLog += AppendLog;
-        Refresh();
+        ScanLocal();
     }
 
-    private void Refresh()
-    {
-        try { Service.Refresh(); }
-        catch (Exception ex) { AppendLog(new LogEntry($"Load failed: {ex.Message}\n", ConsoleColor.Red)); }
-    }
+    private bool _diffedOnce;
 
     private void Save()
     {
@@ -480,7 +623,33 @@
     {
         _busy = true;
         try { await Task.Run(action); }
-        finally { _busy = false; }
+        finally { _busy = false; await InvokeAsync(StateHasChanged); }
+    }
+
+    // local scan, then check the server so the diff counts are always current
+    private Task Refresh() => Run(() => { ScanLocal(); CheckDiff(); });
+
+    private void ScanLocal()
+    {
+        try { Service.Refresh(); }
+        catch (Exception ex) { AppendLog(new LogEntry($"Load failed: {ex.Message}\n", ConsoleColor.Red)); }
+    }
+
+    // one button: push every folder to the server with live progress, then refresh the diff counts
+    private async Task Sync()
+    {
+        // Progress<T> captures this UI context, so reports marshal back and re-render automatically
+        var reporter = new Progress<SyncProgress>(p => { _progress = p; StateHasChanged(); });
+        _progress = new SyncProgress(0, TotalDiff, "", "", DeltaKind.Add);
+        try { await Run(() => { Service.SyncAll(reporter); CheckDiff(); }); }
+        finally { _progress = null; await InvokeAsync(StateHasChanged); }
+    }
+
+    // compare local against the server; a failed connection is captured in the result and shown as "Off"
+    private void CheckDiff()
+    {
+        if (!ServerReady) { _sync = null; return; }
+        _sync = Service.Diff();
     }
 
     private static string RowClass(Mod mod, bool problem)

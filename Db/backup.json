@@ -4,9 +4,9 @@
     "Priority": "Necessary",
     "Category": "Client",
     "Description": "better achivements",
-    "FileName": "AdvancementPlaques-1.19.2-1.4.7.jar",
+    "FileName": "AdvancementPlaques-1.20.1-forge-1.6.9.jar",
     "Dependencies": [
-      "Iceberg-1.19.2-forge-1.1.4.jar"
+      "Iceberg-1.20.1-forge-1.1.25.jar"
     ],
     "Works": false,
     "Configured": false
@@ -619,8 +619,8 @@
   },
   {
     "Id": "Dungeons Arise Seven Seas",
-    "Priority": "Unknown",
-    "Category": "Unknown",
+    "Priority": "Maybe",
+    "Category": "Look",
     "Description": "",
     "FileName": "DungeonsAriseSevenSeas-1.20.x-1.0.2-forge.jar",
     "Dependencies": [],
@@ -774,7 +774,7 @@
   },
   {
     "Id": "Embeddium",
-    "Priority": "Unknown",
+    "Priority": "Necessary",
     "Category": "Client",
     "Description": "the single biggest FPS gain. (Use Embeddium, not the older Rubidium.)",
     "FileName": "embeddium-0.3.31\u002Bmc1.20.1.jar",
@@ -925,8 +925,8 @@
   },
   {
     "Id": "Explorify",
-    "Priority": "Unknown",
-    "Category": "Unknown",
+    "Priority": "Maybe",
+    "Category": "Look",
     "Description": "",
     "FileName": "Explorify v1.6.5.mod.jar",
     "Dependencies": [],
@@ -1039,8 +1039,8 @@
   },
   {
     "Id": "Forgotten Battle Towers",
-    "Priority": "Unknown",
-    "Category": "Unknown",
+    "Priority": "Necessary",
+    "Category": "Difficulty",
     "Description": "",
     "FileName": "fbt-1.0.6a.jar",
     "Dependencies": [],
@@ -1049,8 +1049,8 @@
   },
   {
     "Id": "formations nether",
-    "Priority": "Unknown",
-    "Category": "Unknown",
+    "Priority": "Maybe",
+    "Category": "Look",
     "Description": "",
     "FileName": "formationsnether-1.0.5.jar",
     "Dependencies": [
@@ -1243,6 +1243,16 @@
     "Configured": false
   },
   {
+    "Id": "ImmediatelyFast",
+    "Priority": "Necessary",
+    "Category": "Client",
+    "Description": "Speeds up immediate-mode rendering (UI, text, JEI-heavy screens)",
+    "FileName": "ImmediatelyFast-Forge-1.5.4\u002B1.20.4.jar",
+    "Dependencies": [],
+    "Works": false,
+    "Configured": false
+  },
+  {
     "Id": "improvedmobs-1.19-1.11.0-forge.jar",
     "Priority": "Necessary",
     "Category": "Difficulty",
@@ -1307,7 +1317,7 @@
   {
     "Id": "inventory sorter",
     "Priority": "Necessary",
-    "Category": "Client",
+    "Category": "Content",
     "Description": "sort inventory middle click",
     "FileName": "inventorysorter-1.20.1-23.0.11.jar",
     "Dependencies": [],
@@ -1320,6 +1330,16 @@
     "Category": "Client",
     "Description": "mouse twerks",
     "FileName": "invtweaks-1.16.4-1.0.1.jar",
+    "Dependencies": [],
+    "Works": false,
+    "Configured": false
+  },
+  {
+    "Id": "iron chest",
+    "Priority": "Necessary",
+    "Category": "Convention",
+    "Description": "bigger chests",
+    "FileName": "ironchest-1.20.1-14.4.4.jar",
     "Dependencies": [],
     "Works": false,
     "Configured": false
@@ -1382,7 +1402,7 @@
   {
     "Id": "JEI",
     "Priority": "Necessary",
-    "Category": "Convention",
+    "Category": "Client",
     "Description": "Just Enough Items \n[ - show recipe \n] - show usage",
     "FileName": "jei-1.20.1-forge-15.20.0.132.jar",
     "Dependencies": [],
@@ -1392,7 +1412,7 @@
   {
     "Id": "Just Enough Resources",
     "Priority": "Necessary",
-    "Category": "Content",
+    "Category": "Client",
     "Description": "jei for resources",
     "FileName": "JustEnoughResources-1.20.1-1.4.0.247.jar",
     "Dependencies": [],
@@ -1423,8 +1443,8 @@
   },
   {
     "Id": "JustLeveling x IronSpell",
-    "Priority": "Unknown",
-    "Category": "Unknown",
+    "Priority": "Necessary",
+    "Category": "Difficulty",
     "Description": "just leveling for iron spell magic",
     "FileName": "JustLeveling x IronSpell-1.1.jar",
     "Dependencies": [],
@@ -1562,18 +1582,6 @@
     "Configured": false
   },
   {
-    "Id": "majruszs-difficulty-forge-1.19.2-1.9.9-backport.1.jar",
-    "Priority": "Necessary",
-    "Category": "Difficulty",
-    "Description": "makes mobs a lot harder and harder",
-    "FileName": "majruszs-difficulty-forge-1.19.2-1.9.9-backport.1.jar",
-    "Dependencies": [
-      "majrusz-library-forge-1.19.2-7.0.5-backport.1.jar"
-    ],
-    "Works": false,
-    "Configured": false
-  },
-  {
     "Id": "majruszsaccessories-1.16.5-0.1.4.jar",
     "Priority": "Necessary",
     "Category": "Content",
@@ -1612,8 +1620,8 @@
   },
   {
     "Id": "MES - Moog\u0027s End Structures",
-    "Priority": "Unknown",
-    "Category": "Unknown",
+    "Priority": "Maybe",
+    "Category": "Look",
     "Description": "",
     "FileName": "MoogsEndStructures-1.20-2.0.3.jar",
     "Dependencies": [
@@ -1779,8 +1787,8 @@
   },
   {
     "Id": "MVS - Moog\u0027s Voyager Structures",
-    "Priority": "Unknown",
-    "Category": "Unknown",
+    "Priority": "Maybe",
+    "Category": "Look",
     "Description": "",
     "FileName": "MoogsVoyagerStructures-1.20-5.0.6.jar",
     "Dependencies": [
@@ -1851,9 +1859,9 @@
     "Priority": "Necessary",
     "Category": "Client",
     "Description": "performance improvement",
-    "FileName": "oculus-mc1.19.2-1.6.9.jar",
+    "FileName": "oculus-mc1.20.1-1.8.0.jar",
     "Dependencies": [
-      "rubidium-mc1.19.2-0.6.2c.jar"
+      "rubidium-mc1.20.1-0.7.1a.jar"
     ],
     "Works": false,
     "Configured": false
@@ -2010,6 +2018,16 @@
     "Configured": false
   },
   {
+    "Id": "ready player fun",
+    "Priority": "Necessary",
+    "Category": "Unknown",
+    "Description": "pasue time on server if noone is playing",
+    "FileName": "readyplayerfun-1.20.1-3.0.1.2-FORGE.jar",
+    "Dependencies": [],
+    "Works": false,
+    "Configured": false
+  },
+  {
     "Id": "RealisticTorches",
     "Priority": "Necessary",
     "Category": "Difficulty",
@@ -2054,10 +2072,12 @@
   {
     "Id": "remodifier",
     "Priority": "Necessary",
-    "Category": "Difficulty",
+    "Category": "Helper",
     "Description": "randomly-assigned modifiers to items",
-    "FileName": "remodifier-1.19.2-2.0.0.jar",
-    "Dependencies": [],
+    "FileName": "remodifier-1.20.1-2.3.3.jar",
+    "Dependencies": [
+      "curios-forge-5.14.1\u002B1.20.1.jar"
+    ],
     "Works": false,
     "Configured": false
   },
@@ -2145,8 +2165,8 @@
   },
   {
     "Id": "Saturn",
-    "Priority": "Unknown",
-    "Category": "Unknown",
+    "Priority": "Necessary",
+    "Category": "Helper",
     "Description": "Reduces memory allocation/GC churn on the server thread",
     "FileName": "saturn-mc1.20.1-0.1.3.jar",
     "Dependencies": [],
@@ -2298,7 +2318,7 @@
     "Id": "spark",
     "Priority": "Necessary",
     "Category": "Helper",
-    "Description": "monitoring tool - I don\u0027t know how to use it",
+    "Description": "monitoring perf profiler",
     "FileName": "spark-1.10.53-forge.jar",
     "Dependencies": [],
     "Works": false,
@@ -2386,9 +2406,9 @@
   },
   {
     "Id": "Structory",
-    "Priority": "Unknown",
-    "Category": "Unknown",
-    "Description": "",
+    "Priority": "Maybe",
+    "Category": "Look",
+    "Description": "a few vanilla-like structures",
     "FileName": "Structory_1.20.x_v1.3.5.jar",
     "Dependencies": [],
     "Works": false,
@@ -2458,9 +2478,9 @@
   },
   {
     "Id": "Terralith",
-    "Priority": "Unknown",
-    "Category": "Unknown",
-    "Description": "",
+    "Priority": "Maybe",
+    "Category": "Look",
+    "Description": "more vanilla-like biomes",
     "FileName": "Terralith_1.20.x_v2.5.4.jar",
     "Dependencies": [],
     "Works": true,
@@ -2529,8 +2549,8 @@
     "Id": "tombstone",
     "Priority": "Necessary",
     "Category": "Content",
-    "Description": "tombs, mobs, potions",
-    "FileName": "tombstone-1.19.2-8.2.16.jar",
+    "Description": "tombs (grave), mobs, potions - better death check ",
+    "FileName": "tombstone-1.20.1-9.1.0.jar",
     "Dependencies": [],
     "Works": false,
     "Configured": false
@@ -2612,6 +2632,16 @@
     "Configured": false
   },
   {
+    "Id": "travelers backpack",
+    "Priority": "Necessary",
+    "Category": "Convention",
+    "Description": "backpacks",
+    "FileName": "travelersbackpack-forge-1.20.1-9.1.55.jar",
+    "Dependencies": [],
+    "Works": false,
+    "Configured": false
+  },
+  {
     "Id": "twilightforest",
     "Priority": "NotNeeded",
     "Category": "Content",
@@ -2688,8 +2718,8 @@
   {
     "Id": "useful_backpacks",
     "Priority": "Necessary",
-    "Category": "Content",
-    "Description": "backpack",
+    "Category": "Convention",
+    "Description": "backpacks",
     "FileName": "useful_backpacks-1.19.2-1.14.1.107.jar",
     "Dependencies": [
       "u_team_core-forge-1.19.2-4.4.3.287.jar"

@@ -8,7 +8,7 @@ namespace McHelper.Logic;
 /// Logical mods are matched to live jar files in the mods folder by their known filenames;
 /// "installed" is observed from that folder, never stored.
 /// </summary>
-public class ModService(ModsRepo repo, FtpConfig ftpConfig, Paths paths)
+public class ModService(ModsRepo repo, ServerConfig server, Paths paths)
 {
 	public List<Mod> Mods { get; private set; } = [];
 
@@ -112,24 +112,43 @@ public class ModService(ModsRepo repo, FtpConfig ftpConfig, Paths paths)
 		Logger.LogLine($"Removed {mod.Id} from db", ConsoleColor.Red);
 	}
 
-	private IEnumerable<Mod> Installed => Mods.Where(m => m.Installed);
+	/// <summary>
+	/// Every jar present in the local mods folder except those belonging to client-only mods.
+	/// The server needs all the libraries/dependencies too, not just the mods that have a db entry —
+	/// so we push the whole folder and only hold back what's explicitly marked <see cref="Category.Client"/>.
+	/// </summary>
+	private IReadOnlySet<string> ServerModFiles()
+	{
+		var clientFiles = Mods
+			.Where(m => m.Category == Category.Client && !string.IsNullOrEmpty(m.FileName))
+			.Select(m => m.FileName)
+			.ToHashSet(StringComparer.InvariantCultureIgnoreCase);
 
-	public void FtpMods(bool upload) => WithFtp(ftp => ftp.SyncMods(Installed, upload));
-	public void FtpConfigFiles(bool upload) => WithFtp(ftp => ftp.SyncConfig(upload));
-	public void FtpDatapacks(bool upload) => WithFtp(ftp => ftp.SyncDatapacks(upload));
-	public void FtpServerConfig(bool upload) => WithFtp(ftp => ftp.SyncServerConfig(upload));
+		return _installed
+			.Where(f => !clientFiles.Contains(f))
+			.ToHashSet(StringComparer.InvariantCultureIgnoreCase);
+	}
 
-	private void WithFtp(Action<SyncLogic> action)
+	/// <summary> Compare every local folder (and the Forge version) against the server without changing anything. </summary>
+	public SyncResult Diff() => WithSync(sync => (sync.Diff(ServerModFiles()), sync.CheckForge()));
+
+	/// <summary> Push every local folder to the server in one go (reporting progress), then report what was synced. </summary>
+	public SyncResult SyncAll(IProgress<SyncProgress>? progress = null) =>
+		WithSync(sync => (sync.SyncAll(ServerModFiles(), progress), sync.CheckForge()));
+
+	private SyncResult WithSync(Func<SyncLogic, (IReadOnlyList<TargetDiff> Targets, ForgeCheck Forge)> action)
 	{
 		try
 		{
-			using var ftpConnector = new FtpConnector(ftpConfig);
-			var ftp = new SyncLogic(ftpConnector, ftpConfig, paths);
-			action(ftp);
+			using var transport = TransportFactory.Connect(server);
+			var sync = new SyncLogic(transport, server, paths);
+			var (targets, forge) = action(sync);
+			return new(targets, forge, null);
 		}
 		catch (Exception ex)
 		{
-			Logger.LogLine($"FTP failed: {ex.Message}", ConsoleColor.Red);
+			Logger.LogLine($"sync failed: {ex.Message}", ConsoleColor.Red);
+			return new([], null, ex.Message);
 		}
 	}
 }

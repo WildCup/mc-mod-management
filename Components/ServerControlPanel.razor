@@ -1,0 +1,142 @@
+@inject ServerControl Control
+@inject IJSRuntime JS
+@implements IDisposable
+
+@if (Control.Available)
+{
+    <section class="server-panel">
+        <div class="sp-head">
+            <h2>Server</h2>
+            <span class="server @StateCss" title="tmux session 'mc'"><span class="led"></span> @StateLabel</span>
+            <button class="btn" disabled="@(_busy || _state == ServerState.Running)" @onclick="Start">▶ Start</button>
+            <button class="btn warn" disabled="@(_busy || _state != ServerState.Running)" @onclick="Stop">■ Stop</button>
+            <button class="btn danger" disabled="@_busy" @onclick="Kill"
+                    title="force-kill the session — only if Stop hangs; the world is NOT saved">✕ Kill</button>
+            @if (_busy)
+            {
+                <span class="spinner">working…</span>
+            }
+        </div>
+
+        <div class="console">
+            <pre id="mc-console" class="console-log">@((MarkupString)McFormat.ToHtml(_logs ?? "connecting…"))</pre>
+            <div class="console-input">
+                <span class="caret">&gt;</span>
+                <input @bind="_console" @bind:event="oninput"
+                       @onkeydown='e => { if (e.Key == "Enter") SendConsole(); }'
+                       disabled="@(_busy || _state != ServerState.Running)"
+                       placeholder="@(_state == ServerState.Running ? "command + Enter — e.g. say hi · op puffin · time set day" : "start the server to send commands")" />
+            </div>
+        </div>
+    </section>
+}
+
+@code {
+    private const int TailLines = 300;
+
+    private ServerState _state = ServerState.Unknown;
+    private string? _logs;
+    private string _console = "";
+    private bool _busy;        // an explicit action (start/stop/kill/send) is running
+    private bool _polling;     // a background poll is in flight
+    private string? _lastLog;  // last rendered log, to auto-scroll only on change
+
+    private CancellationTokenSource? _cts;
+
+    private string StateLabel => _state switch
+    {
+        ServerState.Running => "Running",
+        ServerState.Stopped => "Stopped",
+        _ => "unreachable",
+    };
+
+    private string StateCss => _state switch
+    {
+        ServerState.Running => "on",
+        ServerState.Unknown => "off",
+        _ => "",
+    };
+
+    protected override void OnInitialized()
+    {
+        if (!Control.Available)
+            return;
+        _cts = new CancellationTokenSource();
+        _ = PollLoop(_cts.Token);
+    }
+
+    private async Task PollLoop(CancellationToken ct)
+    {
+        await Poll();   // first read immediately
+        try
+        {
+            using var timer = new PeriodicTimer(TimeSpan.FromSeconds(2));
+            while (await timer.WaitForNextTickAsync(ct))
+                await Poll();
+        }
+        catch (OperationCanceledException) { /* tab closed */ }
+    }
+
+    private async Task Poll()
+    {
+        if (_busy || _polling)   // don't collide with an action or another poll
+            return;
+        _polling = true;
+        try
+        {
+            var snap = await Task.Run(() => Control.Snapshot(TailLines));
+            _state = snap.State;
+            _logs = snap.Log;
+        }
+        catch (Exception ex)
+        {
+            _state = ServerState.Unknown;
+            _logs = $"poll failed: {ex.Message}";
+        }
+        finally
+        {
+            _polling = false;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private Task Start() => Act(() => Control.Start());
+    private Task Stop() => Act(() => Control.Stop());
+    private Task Kill() => Act(() => Control.Kill());
+
+    private Task SendConsole()
+    {
+        var cmd = _console.Trim();
+        if (cmd.Length == 0 || _state != ServerState.Running)
+            return Task.CompletedTask;
+        _console = "";
+        return Act(() => Control.SendConsole(cmd));
+    }
+
+    private async Task Act(Action action)
+    {
+        _busy = true;
+        try { await Task.Run(action); }
+        catch (Exception ex) { _logs = $"{_logs}\n[error] {ex.Message}"; _state = ServerState.Unknown; }
+        finally
+        {
+            _busy = false;
+            await Poll();   // reflect the action right away, don't wait for the next tick
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_logs != _lastLog)
+        {
+            _lastLog = _logs;
+            try { await JS.InvokeVoidAsync("scrollToBottom", "mc-console"); } catch { /* circuit gone */ }
+        }
+    }
+
+    public void Dispose()
+    {
+        _cts?.Cancel();
+        _cts?.Dispose();
+    }
+}

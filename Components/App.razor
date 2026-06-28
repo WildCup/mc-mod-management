@@ -13,6 +13,9 @@
 <body>
     <Routes />
     <script src="_framework/blazor.web.js"></script>
+    <script>
+        window.scrollToBottom = id => { const e = document.getElementById(id); if (e) e.scrollTop = e.scrollHeight; };
+    </script>
 </body>
 
 </html>
