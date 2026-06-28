@@ -9,20 +9,29 @@ namespace McHelper.Logic;
 /// </summary>
 public class ModsRepo(Paths paths)
 {
-	private readonly JsonSerializerOptions _jsonOptions = new() { WriteIndented = true };
+	private readonly JsonSerializerOptions _jsonOptions =
+		new() { WriteIndented = true, PropertyNameCaseInsensitive = true };
 
-	/// <summary> Load all known mods from database </summary>
+	/// <summary> Load all known mods from database, migrating the legacy filename-keyed format. </summary>
 	public List<Mod> Load()
 	{
+		if (!File.Exists(paths.KnownMods))
+			return [];
+
 		var json = File.ReadAllText(paths.KnownMods);
-		return JsonSerializer.Deserialize<List<Mod>>(json)
+		using var doc = JsonDocument.Parse(json);
+		if (doc.RootElement.GetArrayLength() == 0)
+			return [];
+
+		var stored = JsonSerializer.Deserialize<List<Mod>>(json, _jsonOptions)
 			?? throw new YouIdiotException("Database could not be read!");
+		return stored;
 	}
 
 	/// <summary> Save all known mods to database </summary>
 	public void Save(IEnumerable<Mod> mods)
 	{
-		var ordered = mods.OrderBy(m => m.Name, StringComparer.InvariantCultureIgnoreCase).ToList();
+		var ordered = mods.OrderBy(m => m.Id, StringComparer.InvariantCultureIgnoreCase).ToList();
 
 		//backup current db before overwriting
 		if (File.Exists(paths.KnownMods))

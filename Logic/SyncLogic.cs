@@ -18,7 +18,8 @@ public sealed class SyncLogic(FtpConnector connector, FtpConfig config, Paths pa
 
 		var localFiles = installedMods
 			.Where(m => m.Category != Category.Client)
-			.Select(m => m.Name)
+			.Select(m => m.FileName)
+			.Where(f => !string.IsNullOrEmpty(f))
 			.Order()
 			.ToArray();
 

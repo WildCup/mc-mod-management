@@ -3,26 +3,41 @@
 @implements IDisposable
 @inject ModService Service
 @inject FtpConfig Ftp
+@using System.Net
+@using System.Text
 
-<h1>MC Mod Manager</h1>
+<div class="head">
+    <h1>MC Mod Manager</h1>
+    <div class="stats">
+        <button class="chip @(NoFilter ? "on" : "")" @onclick="ShowAll">
+            <span class="n">@Service.Mods.Count</span> total
+        </button>
+        <button class="chip @(_installedOnly ? "on" : "")" @onclick="() => Toggle(ref _installedOnly)">
+            <span class="n">@InstalledCount</span> installed
+        </button>
+        <button class="chip danger @(_problemsOnly ? "on" : "")" @onclick="() => Toggle(ref _problemsOnly)">
+            <span class="n">@ProblemCount</span> problems
+        </button>
+        @if (Service.Unassigned.Count > 0)
+        {
+            <span class="chip warn"><span class="n">@Service.Unassigned.Count</span> unassigned</span>
+        }
+    </div>
+</div>
 
 <section class="actions">
-    <button class="btn" disabled="@_busy" @onclick="Refresh">Refresh / Scan</button>
-    <button class="btn primary" disabled="@_busy" @onclick="Save">Save db</button>
-
+    <div class="group">
+        <button class="btn" disabled="@_busy" @onclick="Refresh">↻ Refresh / Scan</button>
+    </div>
     <span class="sep"></span>
-
-    <button class="btn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => Service.FtpMods(false))">Mods: diff</button>
-    <button class="btn warn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => Service.FtpMods(true))">Mods: upload</button>
-
-    <button class="btn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => Service.FtpConfigFiles(false))">Config: diff</button>
-    <button class="btn warn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => Service.FtpConfigFiles(true))">Config: upload</button>
-
-    <button class="btn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => Service.FtpDatapacks(false))">Datapacks: diff</button>
-    <button class="btn warn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => Service.FtpDatapacks(true))">Datapacks: upload</button>
-
-    <button class="btn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => Service.FtpServerConfig(false))">Serverconfig: diff</button>
-    <button class="btn warn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => Service.FtpServerConfig(true))">Serverconfig: upload</button>
+    <span class="glabel">diff / upload</span>
+    @foreach (var sync in SyncTargets)
+    {
+        <div class="group">
+            <button class="btn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => sync.Action(false))">@sync.Label</button>
+            <button class="btn warn" disabled="@(_busy || !FtpReady)" @onclick="() => Run(() => sync.Action(true))" title="upload @sync.Label">↑</button>
+        </div>
+    }
 </section>
 
 @if (!FtpReady)
@@ -30,34 +45,133 @@
     <p class="hint">FTP not configured — set <code>App:Ftp:Username</code>, <code>Password</code>, <code>BasePath</code> via user-secrets to enable upload/diff.</p>
 }
 
-<section class="toolbar">
-    <input class="search" placeholder="search name / description..." @bind="_search" @bind:event="oninput" />
-    <label><input type="checkbox" @bind="_installedOnly" /> installed only</label>
-    <span class="count">@Filtered.Count() / @Service.Mods.Count mods</span>
-</section>
+<datalist id="mod-ids">
+    @foreach (var id in ModIds)
+    {
+        <option value="@id"></option>
+    }
+</datalist>
+<datalist id="mod-files">
+    @foreach (var file in ModFiles)
+    {
+        <option value="@file"></option>
+    }
+</datalist>
 
+@if (Service.Unassigned.Count > 0)
+{
+    <section class="unassigned">
+        <div class="head-row">
+            <h2>⚠ Unassigned files</h2>
+            <span class="chip warn static"><span class="n">@Service.Unassigned.Count</span></span>
+        </div>
+        <p class="hint">Jars present in the folder that no mod claims yet. Pick an existing mod id or type a new one.</p>
+        @foreach (var file in Service.Unassigned)
+        {
+            <div class="assign-row">
+                <span class="fname">@file</span>
+                <input list="mod-ids" placeholder="mod id…"
+                       value="@_assign.GetValueOrDefault(file, "")"
+                       @oninput="e => _assign[file] = e.Value?.ToString() ?? string.Empty" />
+                <button class="btn tiny primary" disabled="@_busy" @onclick="() => Assign(file)">assign →</button>
+            </div>
+        }
+    </section>
+}
+
+<div class="count-bar">showing @Filtered.Count() of @Service.Mods.Count mods</div>
+
+<div class="mods-wrap">
 <table class="mods">
     <thead>
         <tr>
-            <th>Mod</th>
-            <th>Priority</th>
-            <th>Category</th>
-            <th>Works</th>
+            <th class="c-exp"></th>
+            <th>
+                <div class="th-filter">
+                    <span>Mod</span>
+                    <div class="search-wrap">
+                        <input class="search-mini" placeholder="🔍 search id / desc / file…" @bind="_search" @bind:event="oninput" />
+                        @if (!string.IsNullOrEmpty(_search))
+                        {
+                            <button class="clear-x" @onclick='() => _search = ""' title="clear">✕</button>
+                        }
+                    </div>
+                </div>
+            </th>
+            <th>
+                <div class="th-filter">
+                    <span>Priority</span>
+                    <select class="filter @(_prioFilter is not null ? "active" : "")" @bind="_prioFilter">
+                        <option value="">All</option>
+                        @foreach (var p in Enum.GetValues<Priority>())
+                        {
+                            <option value="@p">@p</option>
+                        }
+                    </select>
+                </div>
+            </th>
+            <th>
+                <div class="th-filter">
+                    <span>Category</span>
+                    <select class="filter @(_catFilter is not null ? "active" : "")" @bind="_catFilter">
+                        <option value="">All</option>
+                        @foreach (var c in Enum.GetValues<Category>())
+                        {
+                            <option value="@c">@c</option>
+                        }
+                    </select>
+                </div>
+            </th>
+            <th>
+                <div class="th-filter">
+                    <span>Works</span>
+                    <select class="filter @(_worksFilter != Tri.All ? "active" : "")" @bind="_worksFilter">
+                        <option value="@Tri.All">All</option>
+                        <option value="@Tri.Yes">Yes</option>
+                        <option value="@Tri.No">No</option>
+                    </select>
+                </div>
+            </th>
+            <th>
+                <div class="th-filter">
+                    <span>Configured</span>
+                    <select class="filter @(_configuredFilter != Tri.All ? "active" : "")" @bind="_configuredFilter">
+                        <option value="@Tri.All">All</option>
+                        <option value="@Tri.Yes">Yes</option>
+                        <option value="@Tri.No">No</option>
+                    </select>
+                </div>
+            </th>
             <th>Description</th>
-            <th>Dependencies</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var mod in Filtered)
         {
-            <tr class="@(mod.Installed ? "installed" : "absent")">
-                <td class="name">
-                    <span class="dot" title="@(mod.Installed ? "installed" : "not installed")"></span>
-                    @mod.Name
+            var missing = Service.MissingDependencies(mod).ToList();
+            var floating = Service.IsFloating(mod);
+            var problem = missing.Count > 0 || floating;
+            var open = IsExpanded(mod);
+            <tr class="@RowClass(mod, problem)">
+                <td class="c-exp">
+                    <button class="exp @(open ? "open" : "")" @onclick="() => ToggleExpand(mod)"
+                            title="@(open ? "collapse" : "expand")">@(open ? "▾" : "▸")</button>
+                    <span class="dot" title="@(mod.Installed ? mod.FileName : "not installed")"></span>
+                </td>
+                <td class="id-cell">
+                    @EditableText(mod.Id, $"i:{mod.Id}", v => RenameId(mod, v), "id", "id…")
+                    @if (missing.Count > 0)
+                    {
+                        <span class="badge" title="missing: @string.Join(", ", missing)">missing dep</span>
+                    }
+                    @if (floating)
+                    {
+                        <span class="badge" title="nothing installed depends on this">floating</span>
+                    }
                 </td>
                 <td>
-                    <select @bind="mod.Priority">
+                    <select class="pill prio-@mod.Priority" @bind="mod.Priority" @bind:after="Save">
                         @foreach (var p in Enum.GetValues<Priority>())
                         {
                             <option value="@p">@p</option>
@@ -65,25 +179,78 @@
                     </select>
                 </td>
                 <td>
-                    <select @bind="mod.Category">
+                    <select class="pill cat-@mod.Category" @bind="mod.Category" @bind:after="Save">
                         @foreach (var c in Enum.GetValues<Category>())
                         {
                             <option value="@c">@c</option>
                         }
                     </select>
                 </td>
-                <td class="center"><input type="checkbox" @bind="mod.WorksConfirmed" /></td>
-                <td><input class="desc" @bind="mod.Description" /></td>
-                <td>
-                    <textarea class="deps" rows="1"
-                              value="@string.Join("\n", mod.Dependencies)"
-                              @onchange="e => SetDeps(mod, e.Value?.ToString())"></textarea>
+                <td class="c-check">
+                    @if (mod.Installed)
+                    {
+                        <input type="checkbox" class="chk" checked="@mod.Works"
+                               @onchange="e => SetWorks(mod, (bool)(e.Value ?? false))" />
+                    }
                 </td>
-                <td><button class="btn tiny danger" disabled="@_busy" @onclick="() => Service.Delete(mod)">✕</button></td>
+                <td class="c-check">
+                    @if (mod.Installed)
+                    {
+                        <input type="checkbox" class="chk" checked="@mod.Configured"
+                               @onchange="e => SetConfigured(mod, (bool)(e.Value ?? false))" />
+                    }
+                </td>
+                <td>@EditableText(mod.Description, $"d:{mod.Id}", v => { mod.Description = v; Save(); }, "desc", "—")</td>
+                <td><button class="btn tiny danger" disabled="@_busy" @onclick="() => Delete(mod)" title="remove from db">✕</button></td>
             </tr>
+            @if (open)
+            {
+                <tr class="detail-row">
+                    <td></td>
+                    <td colspan="7">
+                        <div class="detail">
+                            <div class="detail-col">
+                                <div class="detail-h">Filename</div>
+                                <div class="line">
+                                    <span class="dot-mini @(mod.Installed ? "on" : "")"
+                                          title="@(mod.Installed ? "present in folder" : "not present")"></span>
+                                    @EditableText(mod.FileName, $"f:{mod.Id}", v => SetFileName(mod, v), "mono grow", "filename…", "mod-files")
+                                </div>
+                            </div>
+                            <div class="detail-col">
+                                <div class="detail-h">Dependencies <span class="cnt">@mod.Dependencies.Count</span></div>
+                                @for (var i = 0; i < mod.Dependencies.Count; i++)
+                                {
+                                    var idx = i;
+                                    var dep = mod.Dependencies[idx];
+                                    var present = Service.IsPresent(dep);
+                                    <div class="line">
+                                        <span class="dot-mini @(present ? "on" : (mod.Installed ? "bad" : ""))"
+                                              title="@DepTitle(mod, present)"></span>
+                                        @EditableText(dep, $"p:{mod.Id}:{idx}", v => SetDep(mod, idx, v), "mono grow", "filename…", "mod-files")
+                                        <button class="x" @onclick="() => RemoveDep(mod, idx)" title="remove">✕</button>
+                                    </div>
+                                }
+                                <div class="line add">
+                                    <input class="ghost mono grow" list="mod-files" placeholder="+ add dependency…"
+                                           value="@_draftDep.GetValueOrDefault(mod.Id, "")"
+                                           @oninput="e => _draftDep[mod.Id] = e.Value?.ToString() ?? string.Empty"
+                                           @onkeydown='e => { if (e.Key == "Enter") AddDep(mod); }' />
+                                    <button class="x add-btn" @onclick="() => AddDep(mod)" title="add">＋</button>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        @if (!Filtered.Any())
+        {
+            <tr><td colspan="8" class="empty">No mods match the current filters.</td></tr>
         }
     </tbody>
 </table>
+</div>
 
 <section class="log">
     <div class="log-head">
@@ -100,19 +267,168 @@
 
 @code {
     private readonly List<LogEntry> _log = new();
+    private readonly Dictionary<string, string> _assign = new();
+    private readonly Dictionary<string, string> _draftDep = new();
+    // explicit user choice per mod id (true=open, false=collapsed); absent = follow auto-expand
+    private readonly Dictionary<string, bool> _manual = new(StringComparer.OrdinalIgnoreCase);
+
     private string _search = "";
+    private Category? _catFilter;
+    private Priority? _prioFilter;
+    private Tri _worksFilter = Tri.All;
+    private Tri _configuredFilter = Tri.All;
     private bool _installedOnly;
+    private bool _problemsOnly;
     private bool _busy;
+
+    // tri-state column filter: ignore / must be true / must be false
+    private enum Tri { All, Yes, No }
+    private static bool TriMatch(Tri f, bool value) => f switch
+    {
+        Tri.Yes => value,
+        Tri.No => !value,
+        _ => true,
+    };
+
+    // the single field currently in edit mode (click-to-edit), so the rest stay highlightable text
+    private string? _editing;
+    private ElementReference _editRef;
+    private bool _focusNext;
 
     private bool FtpReady =>
         !string.IsNullOrWhiteSpace(Ftp.Username) && !string.IsNullOrWhiteSpace(Ftp.BasePath);
 
+    private bool NoFilter => !_installedOnly && !_problemsOnly;
+    private int InstalledCount => Service.Mods.Count(m => m.Installed);
+    private int ProblemCount => Service.Mods.Count(HasProblem);
+
+    private record SyncTarget(string Label, Action<bool> Action);
+    private IEnumerable<SyncTarget> SyncTargets =>
+    [
+        new("Mods", Service.FtpMods),
+        new("Config", Service.FtpConfigFiles),
+        new("Datapacks", Service.FtpDatapacks),
+        new("Serverconfig", Service.FtpServerConfig),
+    ];
+
+    private IEnumerable<string> ModIds => Service.Mods
+        .Select(m => m.Id)
+        .OrderBy(id => id, StringComparer.OrdinalIgnoreCase);
+
+    private IEnumerable<string> ModFiles => Service.Mods
+        .Select(m => m.FileName)
+        .Where(f => !string.IsNullOrEmpty(f))
+        .Distinct(StringComparer.OrdinalIgnoreCase)
+        .OrderBy(f => f, StringComparer.OrdinalIgnoreCase);
+
+    private bool HasProblem(Mod mod) =>
+        Service.MissingDependencies(mod).Any() || Service.IsFloating(mod);
+
+    private void ShowAll() { _installedOnly = false; _problemsOnly = false; }
+    private void Toggle(ref bool flag) => flag = !flag;
+
     private IEnumerable<Mod> Filtered => Service.Mods
         .Where(m => !_installedOnly || m.Installed)
-        .Where(m => string.IsNullOrWhiteSpace(_search)
-            || m.Name.Contains(_search, StringComparison.OrdinalIgnoreCase)
-            || m.Description.Contains(_search, StringComparison.OrdinalIgnoreCase))
-        .OrderBy(m => m.Name, StringComparer.OrdinalIgnoreCase);
+        .Where(m => !_problemsOnly || HasProblem(m))
+        .Where(m => _catFilter is null || m.Category == _catFilter)
+        .Where(m => _prioFilter is null || m.Priority == _prioFilter)
+        .Where(m => TriMatch(_worksFilter, m.Works))
+        .Where(m => TriMatch(_configuredFilter, m.Configured))
+        .Where(Matches)
+        .OrderBy(m => m.Id, StringComparer.OrdinalIgnoreCase);
+
+    private bool Matches(Mod m) => string.IsNullOrWhiteSpace(_search)
+        || m.Id.Contains(_search, StringComparison.OrdinalIgnoreCase)
+        || m.Description.Contains(_search, StringComparison.OrdinalIgnoreCase)
+        || m.FileName.Contains(_search, StringComparison.OrdinalIgnoreCase)
+        || m.Dependencies.Any(d => d.Contains(_search, StringComparison.OrdinalIgnoreCase));
+
+    // a manual open/collapse always wins; otherwise auto-expand when the match hides in the detail
+    private bool IsExpanded(Mod m) =>
+        _manual.TryGetValue(m.Id, out var open) ? open : AutoExpand(m);
+
+    // auto-expand only when the search hits a hidden field AND nothing visible (id/description)
+    private bool AutoExpand(Mod m)
+    {
+        if (string.IsNullOrWhiteSpace(_search))
+            return false;
+
+        var visible = m.Id.Contains(_search, StringComparison.OrdinalIgnoreCase)
+            || m.Description.Contains(_search, StringComparison.OrdinalIgnoreCase);
+        if (visible)
+            return false;
+
+        return m.FileName.Contains(_search, StringComparison.OrdinalIgnoreCase)
+            || m.Dependencies.Any(d => d.Contains(_search, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private void ToggleExpand(Mod m) => _manual[m.Id] = !IsExpanded(m);
+
+    private static string DepTitle(Mod mod, bool present)
+    {
+        if (present) return "dependency present in folder";
+        if (mod.Installed) return "MISSING — required but not present";
+        return "not present";
+    }
+
+    // ── click-to-edit field: highlighted text until clicked, input while editing ──
+    private RenderFragment EditableText(string value, string key, Action<string> commit,
+        string css, string placeholder, string? listId = null) => @<span class="ed">
+        @if (_editing == key)
+        {
+            <input @ref="_editRef" class="ghost @css" value="@value" list="@listId"
+                   @onchange="e => { commit(e.Value?.ToString() ?? string.Empty); _editing = null; }"
+                   @onblur="() => _editing = null"
+                   @onkeydown='e => { if (e.Key == "Enter" || e.Key == "Escape") _editing = null; }' />
+        }
+        else
+        {
+            <span class="editable @css" @onclick="() => StartEdit(key)">@RenderValue(value, placeholder)</span>
+        }
+    </span>;
+
+    private MarkupString RenderValue(string value, string placeholder) =>
+        string.IsNullOrEmpty(value)
+            ? (MarkupString)$"<span class=\"ph\">{WebUtility.HtmlEncode(placeholder)}</span>"
+            : Highlight(value);
+
+    private MarkupString Highlight(string text)
+    {
+        var term = _search;
+        if (string.IsNullOrWhiteSpace(term))
+            return (MarkupString)WebUtility.HtmlEncode(text);
+
+        var sb = new StringBuilder();
+        var i = 0;
+        while (i < text.Length)
+        {
+            var idx = text.IndexOf(term, i, StringComparison.OrdinalIgnoreCase);
+            if (idx < 0)
+            {
+                sb.Append(WebUtility.HtmlEncode(text[i..]));
+                break;
+            }
+            sb.Append(WebUtility.HtmlEncode(text[i..idx]));
+            sb.Append("<mark>").Append(WebUtility.HtmlEncode(text.Substring(idx, term.Length))).Append("</mark>");
+            i = idx + term.Length;
+        }
+        return (MarkupString)sb.ToString();
+    }
+
+    private void StartEdit(string key)
+    {
+        _editing = key;
+        _focusNext = true;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_focusNext)
+        {
+            _focusNext = false;
+            try { await _editRef.FocusAsync(); } catch { /* ref gone */ }
+        }
+    }
 
     protected override void OnInitialized()
     {
@@ -132,6 +448,34 @@
         catch (Exception ex) { AppendLog(new LogEntry($"Save failed: {ex.Message}\n", ConsoleColor.Red)); }
     }
 
+    private void Assign(string file)
+    {
+        if (_assign.TryGetValue(file, out var id) && !string.IsNullOrWhiteSpace(id))
+        {
+            Service.Assign(file, id);
+            _ = _assign.Remove(file);
+            Save();
+        }
+    }
+
+    private void Delete(Mod mod)
+    {
+        Service.Delete(mod);
+        Save();
+    }
+
+    private void SetWorks(Mod mod, bool value)
+    {
+        mod.Works = value;
+        Save();
+    }
+
+    private void SetConfigured(Mod mod, bool value)
+    {
+        mod.Configured = value;
+        Save();
+    }
+
     private async Task Run(Action action)
     {
         _busy = true;
@@ -139,11 +483,55 @@
         finally { _busy = false; }
     }
 
-    private static void SetDeps(Mod mod, string? value)
+    private static string RowClass(Mod mod, bool problem)
     {
-        mod.Dependencies = (value ?? "")
-            .Split(['\n', ','], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            .ToList();
+        var state = mod.Installed ? "installed" : "absent";
+        return problem ? $"{state} problem" : state;
+    }
+
+    private void RenameId(Mod mod, string value)
+    {
+        value = value.Trim();
+        if (string.IsNullOrEmpty(value) || value.Equals(mod.Id, StringComparison.Ordinal))
+            return;
+        if (_manual.Remove(mod.Id, out var open))
+            _manual[value] = open;
+        mod.Id = value;
+        Save();
+    }
+
+    private void SetFileName(Mod mod, string value)
+    {
+        mod.FileName = value.Trim();
+        Service.Recompute();
+        Save();
+    }
+
+    private void SetDep(Mod mod, int index, string value)
+    {
+        value = value.Trim();
+        if (string.IsNullOrEmpty(value))
+            mod.Dependencies.RemoveAt(index);
+        else
+            mod.Dependencies[index] = value;
+        Save();
+    }
+
+    private void RemoveDep(Mod mod, int index)
+    {
+        mod.Dependencies.RemoveAt(index);
+        Save();
+    }
+
+    private void AddDep(Mod mod)
+    {
+        var value = _draftDep.GetValueOrDefault(mod.Id, "").Trim();
+        if (string.IsNullOrEmpty(value))
+            return;
+        if (!mod.Dependencies.Contains(value, StringComparer.OrdinalIgnoreCase))
+            mod.Dependencies.Add(value);
+        _draftDep[mod.Id] = "";
+        Save();
     }
 
     private void AppendLog(LogEntry entry)
@@ -158,6 +546,7 @@
     {
         ConsoleColor.Red or ConsoleColor.DarkRed => "#e05555",
         ConsoleColor.Green or ConsoleColor.DarkGreen => "#3fb950",
+        ConsoleColor.Yellow or ConsoleColor.DarkYellow => "#d98c2b",
         ConsoleColor.Magenta or ConsoleColor.DarkMagenta => "#c678dd",
         ConsoleColor.DarkGray or ConsoleColor.Gray => "#888",
         _ => "#ddd",
